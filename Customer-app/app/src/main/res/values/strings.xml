@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Customer App</string>
+    <string name="register">Register</string>
+    <string name="register_name">Name</string>
+    <string name="register_nif">NIF</string>
+    <string name="register_credit_card_information">Credit Card Information</string>
+    <string name="register_type">Type</string>
+    <string name="register_visa">Visa</string>
+    <string name="register_mastercard">MasterCard</string>
+    <string name="register_american_express">American Express</string>
+    <string name="register_number">Number</string>
+    <string name="register_validity">Validity</string>
+    <string name="register_register">Register</string>
+</resources>

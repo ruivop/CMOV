@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_name" />
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="name"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Zé Manel" />
+
+    <TextView
+        android:id="@+id/NIF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_nif" />
+
+    <EditText
+        android:id="@+id/edit_NIF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="VAT"
+        android:ems="10"
+        android:inputType="number"
+        android:text="267985479"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="45dp" />
+
+    <TextView
+        android:id="@+id/credit_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_credit_card_information" />
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_type" />
+
+    <RadioGroup
+        android:id="@+id/credit_card_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/MasterCard"
+        android:orientation='horizontal'>
+
+        <RadioButton
+            android:id="@+id/Visa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/register_visa" />
+
+        <RadioButton
+            android:id="@+id/MasterCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/register_mastercard" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/register_american_express" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_number" />
+
+    <EditText
+        android:id="@+id/credit_card_edit_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="credit_card_number"
+        android:ems="10"
+        android:inputType="number"
+        android:text="123456789012" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_validity" />
+
+    <EditText
+        android:id="@+id/credit_card_edit_validity"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="credit_card_validity"
+        android:ems="10"
+        android:inputType="date"
+        android:text="05-06-18"
+        tools:text="@tools:sample/date/ddmmyy" />
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_register" />
+
+</LinearLayout>
