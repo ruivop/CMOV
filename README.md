@@ -1,1 +1,1 @@
-The specification is the pdf file.
+The specification is the documents/specification.pdf file.
