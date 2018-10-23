@@ -1,120 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_name" />
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/edit_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="name"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Zé Manel" />
-
-    <TextView
-        android:id="@+id/NIF"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_nif" />
-
-    <EditText
-        android:id="@+id/edit_NIF"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="VAT"
-        android:ems="10"
-        android:inputType="number"
-        android:text="267985479"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="45dp" />
-
-    <TextView
-        android:id="@+id/credit_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_credit_card_information" />
-
-    <TextView
-        android:id="@+id/type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_type" />
-
-    <RadioGroup
-        android:id="@+id/credit_card_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checkedButton="@+id/MasterCard"
-        android:orientation='horizontal'>
-
-        <RadioButton
-            android:id="@+id/Visa"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/register_visa" />
+            android:layout_marginStart="8dp"
+            android:text="@string/register_name"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_name"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <RadioButton
-            android:id="@+id/MasterCard"
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:autofillHints="name"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Zé Manel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/NIF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/register_mastercard" />
+            android:layout_marginStart="16dp"
+            android:text="@string/register_nif"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_NIF"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <RadioButton
-            android:id="@+id/radioButton"
+        <EditText
+            android:id="@+id/edit_NIF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints="VAT"
+            android:ems="10"
+            android:inputType="number"
+            android:text="267985479"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/NIF"
+            app:layout_constraintTop_toBottomOf="@+id/edit_name" />
+
+        <TextView
+            android:id="@+id/credit_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/register_american_express" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/register_credit_card_information"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_NIF" />
 
-    </RadioGroup>
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/register_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/credit_card" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register_number" />
+        <RadioGroup
+            android:id="@+id/credit_card_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:checkedButton="@+id/MasterCard"
+            android:orientation='horizontal'
+            app:layout_constraintStart_toEndOf="@+id/type"
+            app:layout_constraintTop_toBottomOf="@+id/credit_card">
 
-    <EditText
-        android:id="@+id/credit_card_edit_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="credit_card_number"
-        android:ems="10"
-        android:inputType="number"
-        android:text="123456789012" />
+            <RadioButton
+                android:id="@+id/Visa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/register_visa" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_validity" />
+            <RadioButton
+                android:id="@+id/MasterCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/register_mastercard" />
 
-    <EditText
-        android:id="@+id/credit_card_edit_validity"
-        style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="credit_card_validity"
-        android:ems="10"
-        android:inputType="date"
-        android:text="05-06-18"
-        tools:text="@tools:sample/date/ddmmyy" />
+            <RadioButton
+                android:id="@+id/AmericanExpress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/register_american_express" />
 
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_register" />
+        </RadioGroup>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/register_number"
+            app:layout_constraintBaseline_toBaselineOf="@+id/credit_card_edit_number"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/credit_card_edit_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:autofillHints="credit_card_number"
+            android:ems="10"
+            android:inputType="number"
+            android:text="123456789012"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/credit_card_type" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/register_validity"
+            app:layout_constraintBaseline_toBaselineOf="@+id/credit_card_edit_validity"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/credit_card_edit_validity"
+            style="@style/Widget.AppCompat.AutoCompleteTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:autofillHints="credit_card_validity"
+            android:ems="10"
+            android:inputType="date"
+            android:text="05-06-18"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/credit_card_edit_number"
+            tools:text="@tools:sample/date/ddmmyy" />
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/register_register"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/credit_card_edit_validity"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
