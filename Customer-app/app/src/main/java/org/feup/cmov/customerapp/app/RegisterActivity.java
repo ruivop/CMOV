@@ -1,20 +1,23 @@
-package org.feup.cmov.customerapp;
+package org.feup.cmov.customerapp.app;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import org.feup.cmov.customerapp.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends AppCompatActivity {
 
     public enum CreditCardType {
         Visa, AmericanExpress, MasterCard
@@ -43,6 +46,8 @@ public class RegisterActivity extends Activity {
             @Override
             public void onClick(View v) {
                 ((RegisterActivity) context).updateFields();
+                Intent intent = new Intent(context, PerformancesActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -51,9 +56,13 @@ public class RegisterActivity extends Activity {
         editType = findViewById(R.id.credit_card_type);
         editCreditCardNumber = findViewById(R.id.credit_card_edit_number);
         editcreditCardValidity = findViewById(R.id.credit_card_edit_validity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Register");
     }
 
-    public void updateFields(){
+    public void updateFields() {
         costumerName = editName.getText().toString();
         NIF = Long.parseLong(editNIF.getText().toString());
         type = CreditCardType.valueOf(getResources().getResourceEntryName(editType.getCheckedRadioButtonId()));
@@ -65,5 +74,7 @@ public class RegisterActivity extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+
     }
 }

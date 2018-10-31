@@ -1,0 +1,76 @@
+package org.feup.cmov.customerapp.adapter;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.TextureView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.feup.cmov.customerapp.R;
+import org.feup.cmov.customerapp.model.Performance;
+
+import java.util.List;
+
+import static android.content.ContentValues.TAG;
+
+public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.MyViewHolder> {
+
+    List<Performance> performanceList;
+    LayoutInflater layoutInflater;
+
+    public PerformanceAdapter(Context context, List<Performance> performanceList) {
+        this.performanceList = performanceList;
+        this.layoutInflater = LayoutInflater.from(context);
+    }
+
+    @NonNull
+    @Override
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = layoutInflater.inflate(R.layout.performance_item, viewGroup, false);
+        MyViewHolder holder = new MyViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+
+        Performance performance = performanceList.get(i);
+        myViewHolder.setData(performance, i);
+    }
+
+    @Override
+    public int getItemCount() {
+        return performanceList.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder{
+
+        TextView title;
+        ImageView image;
+        TextView description;
+        TextView date;
+        int position;
+        Performance current;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.performance_title_item);
+            image = itemView.findViewById(R.id.performance_image_item);
+            description = itemView.findViewById(R.id.performance_description_item);
+            date = itemView.findViewById(R.id.performance_date_item);
+        }
+
+        public void setData(Performance performance, int i) {
+            title.setText(performance.getTitle());
+            description.setText(performance.getDescription());
+            date.setText(performance.getDate());
+            image.setImageResource(performance.getImage());
+            current = performance;
+        }
+    }
+}
