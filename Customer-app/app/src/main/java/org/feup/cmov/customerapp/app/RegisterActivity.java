@@ -11,11 +11,14 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import org.feup.cmov.customerapp.R;
+import org.feup.cmov.customerapp.model.RSA;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -75,12 +78,33 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        generateKeys();
+
 
 
 
     }
 
     public void generateKeys(){
+        Intent intent = getIntent();
+        String publicKey = intent.getStringExtra("pubkey");
+        String privateKey = intent.getStringExtra("prikey");
+
+        byte[] userData;
+        String NIFString = String.valueOf(NIF);
+        String TypeString = type.toString();
+        String CCNString = String.valueOf(creditCardNumber);
+        String CCVString = creditCardValidity.toString();
+
+        String byteString = costumerName + "//" + NIFString + "//" + TypeString + "//" + CCNString + "//" + CCVString;
+
+        byte[] Data = byteString.getBytes();
+
+        try {
+            byte[] encodedData = RSA.encryptByPublicKey(Data,publicKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
