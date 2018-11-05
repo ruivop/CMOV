@@ -12,6 +12,7 @@ namespace RestApi.Models
         {}
 
         public DbSet<RestItem> RestItems { get; set; }
+        public DbSet<RestCustomer> RestCustomers { get; set; }
 
     }
 }

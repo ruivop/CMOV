@@ -24,6 +24,7 @@ namespace RestApi.Controllers
                 //Create a new RestItem if collection is empty,
                 //which means you can't delete all RestItems
                 _context.RestItems.Add(new RestItem { Name = "Item1" });
+                _context.RestCustomers.Add(new RestCustomer { RSA = "Item1" });
                 _context.SaveChanges();
             }
         }
@@ -59,6 +60,23 @@ namespace RestApi.Controllers
             return item;
         }
 
+        [HttpGet("customer/{id}", Name = "GetCustomer")]
+        public ActionResult<RestCustomer> GetCustomerById(long id)
+        {
+            var item = _context.RestCustomers.Find(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return item;
+        }
+
+        [HttpGet("customer")]
+        public ActionResult<List<RestCustomer>> GetCustomers()
+        {
+            return _context.RestCustomers.ToList();
+        }
+
         // POST api/<controller>
         [HttpPost]
         public IActionResult Create(RestItem rest)
@@ -67,6 +85,16 @@ namespace RestApi.Controllers
             _context.SaveChanges();
 
             return CreatedAtRoute("GetRest", new { id = rest.Id }, rest);
+        }
+
+
+        [HttpPost("customer")]
+        public IActionResult CreateCustomer(RestCustomer rest)
+        {
+            _context.RestCustomers.Add(rest);
+            _context.SaveChanges();
+
+            return CreatedAtRoute("GetCustomer", new { id = rest.Id }, rest);
         }
 
         // PUT api/<controller>/5
@@ -103,4 +131,6 @@ namespace RestApi.Controllers
             return NoContent();
         }
     }
+
+   
 }

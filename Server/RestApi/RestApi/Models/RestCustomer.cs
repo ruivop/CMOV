@@ -8,8 +8,7 @@ namespace RestApi.Models
     public class RestCustomer
     {
         public long Id { get; set; }
-        public string Name { get; set; }
-        public string NIF { get; set; }
-        public long RSA { get; set; }
+        public byte[] userdata { get; set; }
+        public string RSA { get; set; }
     }
 }
