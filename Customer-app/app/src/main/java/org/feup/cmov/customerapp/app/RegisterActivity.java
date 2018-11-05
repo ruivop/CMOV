@@ -3,6 +3,7 @@ package org.feup.cmov.customerapp.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,14 +11,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.feup.cmov.customerapp.R;
 import org.feup.cmov.customerapp.model.RSA;
+import org.feup.cmov.customerapp.utils.HttpUtils;
+import org.json.JSONArray;
 
+import java.security.interfaces.RSAPublicKey;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.Map;
+import java.util.Set;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -78,19 +86,21 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        generateKeys();
-
-
+        try {
+            generateKeys();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
 
-    public void generateKeys(){
-        Intent intent = getIntent();
-        String publicKey = intent.getStringExtra("pubkey");
-        String privateKey = intent.getStringExtra("prikey");
+    public void generateKeys() throws Exception {
 
-        byte[] userData;
+        Map<String, Object> keyMap = RSA.initKey();
+        String publicKey = RSA.getPublicKey(keyMap);
+        String privateKey = RSA.getPrivateKey(keyMap);
+
         String NIFString = String.valueOf(NIF);
         String TypeString = type.toString();
         String CCNString = String.valueOf(creditCardNumber);
@@ -102,9 +112,22 @@ public class RegisterActivity extends AppCompatActivity {
 
         try {
             byte[] encodedData = RSA.encryptByPublicKey(Data,publicKey);
+            RequestParams rp = new RequestParams();
+            rp.put("userdata",encodedData);
+            rp.add("rsa", publicKey);
+
+            HttpUtils.postByUrl("https://localhost:44367/api/rest/customer",rp,new JsonHttpResponseHandler() {
+
+
+                public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONArray timeline) {
+                    // Pull out the first event on the public timeline
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 
