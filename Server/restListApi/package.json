@@ -1,0 +1,21 @@
+{
+  "name": "todolistapi",
+  "version": "1.0.0",
+  "description": "Rest Api",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 1"
+  },
+  "keywords": [
+    "Rest"
+  ],
+  "author": "Api",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.3.9"
+  }
+}
