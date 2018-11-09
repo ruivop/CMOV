@@ -114,9 +114,9 @@ public class RegisterActivity extends AppCompatActivity {
             byte[] encodedData = RSA.encryptByPublicKey(Data,publicKey);
             RequestParams rp = new RequestParams();
             rp.put("userdata",encodedData);
-            rp.add("rsa", publicKey);
+            rp.add("publicKey", publicKey);
 
-            HttpUtils.postByUrl("https://localhost:44367/api/rest/customer",rp,new JsonHttpResponseHandler() {
+            HttpUtils.postByUrl("https://localhost:3000/users",rp,new JsonHttpResponseHandler() {
 
 
                 public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONArray timeline) {
