@@ -3,6 +3,7 @@ package org.feup.cmov.customerapp.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,16 @@ import org.feup.cmov.customerapp.model.RSA;
 import org.feup.cmov.customerapp.utils.HttpUtils;
 import org.json.JSONArray;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.interfaces.RSAPublicKey;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -112,23 +123,63 @@ public class RegisterActivity extends AppCompatActivity {
 
         try {
             byte[] encodedData = RSA.encryptByPublicKey(Data,publicKey);
-            RequestParams rp = new RequestParams();
-            rp.put("userdata",encodedData);
-            rp.add("publicKey", publicKey);
 
-            HttpUtils.postByUrl("https://localhost:3000/users",rp,new JsonHttpResponseHandler() {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            String urlParameters  = "publicKey=" + publicKey;
+            byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
+            int postDataLength = postData.length;
+            String request = "http://hello.localtunnel.me:3000/users";
+            URL url = new URL( request );
+            HttpURLConnection conn= (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setInstanceFollowRedirects(false);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("charset", "utf-8");
+            conn.setRequestProperty("Content-Length", Integer.toString(postDataLength ));
+            conn.setUseCaches(false);
+            byte[] outputBytes = urlParameters.getBytes("UTF-8");
+            OutputStream os = conn.getOutputStream();
+            os.write(outputBytes);
+            os.flush();
+            os.close();
+
+            InputStream inputStream = new BufferedInputStream(conn.getInputStream());
+            String ResponseData = convertStreamToString(inputStream);
+            System.out.println(ResponseData);
 
 
-                public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONArray timeline) {
-                    // Pull out the first event on the public timeline
 
-                }
-            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
+    }
+
+    public String convertStreamToString(InputStream is) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append((line + "\n"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 
 
