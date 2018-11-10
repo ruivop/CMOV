@@ -163,6 +163,11 @@ public class RegisterActivity extends AppCompatActivity {
             SharedPreferences.Editor Ed = sp.edit();
             Ed.putString("PublicKey",publicKey);
             Ed.putString("PrivateKey",privateKey);
+            Ed.putString("Name",costumerName);
+            Ed.putString("NIF",NIFString);
+            Ed.putString("CCType",TypeString);
+            Ed.putString("CCNumber",CCNString);
+            Ed.putString("CCValidity",CCVString);
             Ed.commit();
 
         } catch (Exception e) {
