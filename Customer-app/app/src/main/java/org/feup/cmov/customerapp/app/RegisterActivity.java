@@ -2,6 +2,7 @@ package org.feup.cmov.customerapp.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceActivity;
@@ -61,6 +62,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         final Context context = this;
+
+        SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
+        String testRegister = sp1.getString("PublicKey",null);
+        if(testRegister != null){
+            Intent intent = new Intent(context, PerformancesActivity.class);
+            startActivity(intent);
+        }
+
 
         Button register_btn = findViewById(R.id.register_button);
 
@@ -150,8 +159,11 @@ public class RegisterActivity extends AppCompatActivity {
             String ResponseData = convertStreamToString(inputStream);
             System.out.println(ResponseData);
 
-
-
+            SharedPreferences sp = getSharedPreferences("Register", MODE_PRIVATE);
+            SharedPreferences.Editor Ed = sp.edit();
+            Ed.putString("PublicKey",publicKey);
+            Ed.putString("PrivateKey",privateKey);
+            Ed.commit();
 
         } catch (Exception e) {
             e.printStackTrace();

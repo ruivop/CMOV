@@ -2,6 +2,7 @@ package org.feup.cmov.customerapp.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Context context = this;
+
+        SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
+        String testRegister = sp1.getString("PublicKey",null);
+        if(testRegister != null){
+            Intent intent = new Intent(context, PerformancesActivity.class);
+            startActivity(intent);
+        }
+
 
         Button but_qr = findViewById(R.id.register_btn);
 
