@@ -54,6 +54,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         ImageView image;
         TextView description;
         TextView date;
+        TextView price;
         int position;
         Performance current;
 
@@ -63,6 +64,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             image = itemView.findViewById(R.id.performance_image_item);
             description = itemView.findViewById(R.id.performance_description_item);
             date = itemView.findViewById(R.id.performance_date_item);
+            price = itemView.findViewById(R.id.performance_price_item);
         }
 
         public void setData(Performance performance, int i) {
@@ -71,6 +73,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             date.setText(performance.getDate());
             image.setImageResource(performance.getImage());
             current = performance;
+            price.setText(String.valueOf(performance.getPrice()) + "$");
         }
     }
 }
