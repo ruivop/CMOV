@@ -20,6 +20,7 @@ import org.feup.cmov.customerapp.R;
 import org.feup.cmov.customerapp.model.RSA;
 import org.feup.cmov.customerapp.utils.HttpUtils;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -65,10 +66,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
         String testRegister = sp1.getString("PublicKey",null);
-        if(testRegister != null){
+       /* if(testRegister != null){
             Intent intent = new Intent(context, PerformancesActivity.class);
             startActivity(intent);
-        }
+        }*/
 
 
         Button register_btn = findViewById(R.id.register_button);
@@ -159,8 +160,14 @@ public class RegisterActivity extends AppCompatActivity {
             String ResponseData = convertStreamToString(inputStream);
             System.out.println(ResponseData);
 
+            JSONObject jsonobj = new JSONObject(ResponseData);
+            String id = jsonobj.getString("_id");
+            System.out.println(id);
+
+
             SharedPreferences sp = getSharedPreferences("Register", MODE_PRIVATE);
             SharedPreferences.Editor Ed = sp.edit();
+            Ed.putString("Id",id);
             Ed.putString("PublicKey",publicKey);
             Ed.putString("PrivateKey",privateKey);
             Ed.putString("Name",costumerName);

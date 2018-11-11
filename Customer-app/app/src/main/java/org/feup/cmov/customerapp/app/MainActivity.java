@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
 
         SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
-        String testRegister = sp1.getString("PublicKey",null);
+        String testRegister = sp1.getString("Id",null);
         if(testRegister != null){
             Intent intent = new Intent(context, PerformancesActivity.class);
             startActivity(intent);
