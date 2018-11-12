@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void generateKeys() throws Exception {
+    private void generateKeys() throws Exception {
 
         Map<String, Object> keyMap = RSA.initKey();
         String publicKey = RSA.getPublicKey(keyMap);

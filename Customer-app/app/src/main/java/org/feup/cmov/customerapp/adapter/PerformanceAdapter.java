@@ -1,6 +1,8 @@
 package org.feup.cmov.customerapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.feup.cmov.customerapp.R;
+import org.feup.cmov.customerapp.app.PerformancesActivity;
+import org.feup.cmov.customerapp.app.RegisterActivity;
+import org.feup.cmov.customerapp.app.TicketActivity;
 import org.feup.cmov.customerapp.model.Performance;
 
 import java.util.List;
@@ -33,6 +38,9 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = layoutInflater.inflate(R.layout.performance_item, viewGroup, false);
         MyViewHolder holder = new MyViewHolder(view);
+
+
+
         return holder;
     }
 
@@ -65,6 +73,19 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             description = itemView.findViewById(R.id.performance_description_item);
             date = itemView.findViewById(R.id.performance_date_item);
             price = itemView.findViewById(R.id.performance_price_item);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context con = v.getContext();
+                    Intent intent = new Intent(con, TicketActivity.class);
+                    intent.putExtra("price",current.getPrice());
+                    con.startActivity(intent);
+
+
+                }
+            });
         }
 
         public void setData(Performance performance, int i) {
