@@ -45,7 +45,7 @@ public class TicketActivity extends AppCompatActivity {
                         .setCancelable(false)
                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        
+
                         dialog.cancel();
                     }
                 })
@@ -81,6 +81,8 @@ public class TicketActivity extends AppCompatActivity {
     }
 
     private void purchaseTicket(){
+
+
 
     }
 

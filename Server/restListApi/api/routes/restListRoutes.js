@@ -19,6 +19,7 @@ module.exports = function(app) {
 
   app.route('/tickets/:ticketId')
     .get(restList.read_a_ticket)
+    .post(restList.create_more_tickets)
     .put(restList.update_a_ticket)
     .delete(restList.delete_a_ticket);
 };

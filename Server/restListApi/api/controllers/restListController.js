@@ -76,6 +76,16 @@ exports.create_a_ticket = function(req, res) {
   });
 };
 
+exports.create_more_tickets = function(req, res) {
+  for(var i = 0; i < req.params.ticketId ; i++){
+  var new_ticket = new ticket(req.body);
+  new_ticket.save(function(err, ticket) {
+    if (err)
+      res.send(err);
+    res.json(ticket);
+  });
+}};
+
 
 exports.read_a_ticket = function(req, res) {
   ticket.findById(req.params.ticketId, function(err, ticket) {
