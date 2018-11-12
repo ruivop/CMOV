@@ -1,6 +1,7 @@
 package org.feup.cmov.customerapp.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import org.feup.cmov.customerapp.model.Drawer;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MyViewHolder> {
 
     List<Drawer> drawerList;
@@ -24,7 +27,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     public NavigationDrawerAdapter(Context context, List<Drawer> drawerList) {
         this.context = context;
         this.drawerList = drawerList;
+
         this.layoutInflater = LayoutInflater.from(context);
+
     }
 
     @NonNull
@@ -64,9 +69,15 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
             super(itemView);
             title = itemView.findViewById(R.id.nav_dawer_text);
             image = itemView.findViewById(R.id.nav_dawer_icon);
+
         }
 
         public void setData(Drawer drawer, int i) {
+
+            SharedPreferences sp1 = context.getSharedPreferences("Register", MODE_PRIVATE);
+
+            String namePreference = sp1.getString("Name",null);
+            //name.setText("Repas");
             title.setText(drawer.getTitle());
             image.setImageResource(drawer.getImageId());
             current = drawer;

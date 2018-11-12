@@ -1,5 +1,6 @@
 package org.feup.cmov.customerapp.app;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,10 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.feup.cmov.customerapp.R;
 import org.feup.cmov.customerapp.adapter.NavigationDrawerAdapter;
 import org.feup.cmov.customerapp.model.Drawer;
+import org.w3c.dom.Text;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -25,6 +30,11 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.nav_drawer, container, false);
+        TextView nameT = view.findViewById(R.id.textView2);
+        SharedPreferences sp1 = this.getContext().getSharedPreferences("Register", MODE_PRIVATE);
+
+        String namePreference = sp1.getString("Name",null);
+        nameT.setText(namePreference);
         setupRecyclerView(view);
         return view;
     }
