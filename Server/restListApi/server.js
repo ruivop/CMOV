@@ -2,12 +2,13 @@ var express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
   mongoose = require('mongoose'),
-  user = require('./api/models/restListModel'), //created model loading here
+  user = require('./api/models/restListModel'),
+  ticket = require('./api/models/ticketListModel'),
   bodyParser = require('body-parser');
   
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://127.0.0.1:27017/myapp'); 
+mongoose.connect('mongodb://127.0.0.1:27017/Restdb'); 
 
 
 app.use(bodyParser.urlencoded({ extended: true }));

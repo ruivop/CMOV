@@ -3,19 +3,17 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 
-var UserSchema = new Schema({
-    Created_date: {
+var TicketSchema = new Schema({
+Created_date: {
     type: Date,
     default: Date.now
   },
-  userData: {
+  customer: {
     type: Buffer
   },
-  publicKey: {
-    type: String
+  edate: {
+    type: Date
   }
 });
 
-
-
-module.exports = mongoose.model('users', UserSchema);
+module.exports = mongoose.model('tickets',TicketSchema);

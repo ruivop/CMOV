@@ -2,7 +2,8 @@
 
 
 var mongoose = require('mongoose'),
-  user = mongoose.model('users');
+  user = mongoose.model('users'),
+  ticket = mongoose.model('tickets');
 
 exports.list_all_users = function(req, res) {
   user.find({}, function(err, user) {
@@ -52,6 +53,57 @@ exports.delete_a_user = function(req, res) {
     if (err)
       res.send(err);
     res.json({ message: 'user successfully deleted' });
+  });
+};
+
+exports.list_all_tickets = function(req, res) {
+  ticket.find({}, function(err, ticket) {
+    if (err)
+      res.send(err);
+    res.json(ticket);
+  });
+};
+
+
+
+
+exports.create_a_ticket = function(req, res) {
+  var new_ticket = new ticket(req.body);
+  new_ticket.save(function(err, ticket) {
+    if (err)
+      res.send(err);
+    res.json(ticket);
+  });
+};
+
+
+exports.read_a_ticket = function(req, res) {
+  ticket.findById(req.params.ticketId, function(err, ticket) {
+    if (err)
+      res.send(err);
+    res.json(ticket);
+  });
+};
+
+
+exports.update_a_ticket = function(req, res) {
+  ticket.findOneAndUpdate({_id: req.params.ticketId}, req.body, {new: true}, function(err, ticket) {
+    if (err)
+      res.send(err);
+    res.json(ticket);
+  });
+};
+
+
+exports.delete_a_ticket = function(req, res) {
+
+
+  ticket.remove({
+    _id: req.params.ticketId
+  }, function(err, ticket) {
+    if (err)
+      res.send(err);
+    res.json({ message: 'ticket successfully deleted' });
   });
 };
 

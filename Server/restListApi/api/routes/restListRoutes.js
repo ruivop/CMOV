@@ -12,4 +12,13 @@ module.exports = function(app) {
     .get(restList.read_a_user)
     .put(restList.update_a_user)
     .delete(restList.delete_a_user);
+
+  app.route('/tickets')
+  .get(restList.list_all_tickets)
+  .post(restList.create_a_ticket);
+
+  app.route('/tickets/:ticketId')
+    .get(restList.read_a_ticket)
+    .put(restList.update_a_ticket)
+    .delete(restList.delete_a_ticket);
 };
