@@ -159,6 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
             InputStream inputStream = new BufferedInputStream(conn.getInputStream());
             String ResponseData = convertStreamToString(inputStream);
             System.out.println(ResponseData);
+            inputStream.close();
 
             JSONObject jsonobj = new JSONObject(ResponseData);
             String id = jsonobj.getString("_id");

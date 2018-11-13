@@ -8,6 +8,9 @@ Created_date: {
     type: Date,
     default: Date.now
   },
+  performance: {
+  	type: String
+  },
   customer: {
     type: Buffer
   },

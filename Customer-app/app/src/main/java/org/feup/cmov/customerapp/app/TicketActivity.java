@@ -1,5 +1,6 @@
 package org.feup.cmov.customerapp.app;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,7 +41,6 @@ public class TicketActivity extends AppCompatActivity {
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Next Performance");
 
-
         Button but_qr = findViewById(R.id.pur_button);
 
         but_qr.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +51,7 @@ public class TicketActivity extends AppCompatActivity {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
                 alertDialogBuilder.setTitle("Confirm Purchase");
                 setBarTicketval();
+                final View v2 = v;
                 int tval = getTicketval();
 
                 alertDialogBuilder.setMessage("Are you sure you want to buy " + tval + " tickets for " + String.valueOf(price*tval) + "$")
@@ -58,7 +59,9 @@ public class TicketActivity extends AppCompatActivity {
                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         purchaseTicket(getTicketval());
-                        dialog.cancel();
+                        Context context = v2.getContext();
+                        Intent intent = new Intent(context, PerformancesActivity.class);
+                        startActivity(intent);
                     }
                 })
                         .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -94,16 +97,22 @@ public class TicketActivity extends AppCompatActivity {
 
     private void purchaseTicket(int number){
         Intent intent = getIntent();
-        String performancedate = intent.getStringExtra("date");
+        String performanceDate = intent.getStringExtra("date");
+        String performanceTitle = intent.getStringExtra("title");
         SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
         String idReg = sp1.getString("Id",null);
 
         try {
 
-            String urlParameters  = "edate=" + performancedate + "&customer=" + idReg;
+            String urlParameters  = "edate=" + performanceDate + "&customer=" + idReg + "&performance=" + performanceTitle;
             byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
             int postDataLength = postData.length;
-            String request = "http://cmovrestapi.localtunnel.me:3000/tickets";
+            String request = "";
+            if(number == 1){
+            request = "http://cmovrestapi.localtunnel.me:3000/tickets";}
+            else{
+                request = "http://cmovrestapi.localtunnel.me:3000/tickets/" + number;
+            }
             URL url = new URL( request );
             HttpURLConnection conn= (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
@@ -122,6 +131,7 @@ public class TicketActivity extends AppCompatActivity {
             InputStream inputStream = new BufferedInputStream(conn.getInputStream());
             String ResponseData = convertStreamToString(inputStream);
             System.out.println(ResponseData);
+            inputStream.close();
 
         }catch (Exception e){
             e.printStackTrace();
