@@ -1,6 +1,7 @@
 package org.feup.cmov.customerapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.feup.cmov.customerapp.R;
+import org.feup.cmov.customerapp.app.TicketActivity;
 import org.feup.cmov.customerapp.model.Drawer;
 
 import java.util.List;
@@ -45,10 +47,16 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
         Drawer drawer = drawerList.get(i);
         myViewHolder.setData(drawer, i);
+        final Class activity = drawer.getAct();
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, myViewHolder.title.getText().toString(), Toast.LENGTH_SHORT).show();
+                if(activity != null){
+                Context con = v.getContext();
+                Intent intent = new Intent(con, activity);
+                con.startActivity(intent);}
+
             }
         });
     }
@@ -59,6 +67,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
+
+
 
         TextView title;
         ImageView image;
