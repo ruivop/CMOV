@@ -81,6 +81,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
                     Context con = v.getContext();
                     Intent intent = new Intent(con, TicketActivity.class);
                     intent.putExtra("price",current.getPrice());
+                    intent.putExtra("date",current.getDate());
                     con.startActivity(intent);
 
 

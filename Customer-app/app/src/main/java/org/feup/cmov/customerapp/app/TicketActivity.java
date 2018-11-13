@@ -2,6 +2,7 @@ package org.feup.cmov.customerapp.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,17 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import org.feup.cmov.customerapp.R;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 public class TicketActivity extends AppCompatActivity {
 
@@ -41,11 +53,11 @@ public class TicketActivity extends AppCompatActivity {
                 setBarTicketval();
                 int tval = getTicketval();
 
-                alertDialogBuilder.setMessage("Are you sure you want to buy " + tval + " for " + String.valueOf(price*tval) + "$")
+                alertDialogBuilder.setMessage("Are you sure you want to buy " + tval + " tickets for " + String.valueOf(price*tval) + "$")
                         .setCancelable(false)
                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-
+                        purchaseTicket(getTicketval());
                         dialog.cancel();
                     }
                 })
@@ -80,11 +92,67 @@ public class TicketActivity extends AppCompatActivity {
         ticketval = Integer.valueOf(String.valueOf(tval.getText()));
     }
 
-    private void purchaseTicket(){
+    private void purchaseTicket(int number){
+        Intent intent = getIntent();
+        String performancedate = intent.getStringExtra("date");
+        SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
+        String idReg = sp1.getString("Id",null);
+
+        try {
+
+            String urlParameters  = "edate=" + performancedate + "&customer=" + idReg;
+            byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
+            int postDataLength = postData.length;
+            String request = "http://cmovrestapi.localtunnel.me:3000/tickets";
+            URL url = new URL( request );
+            HttpURLConnection conn= (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setInstanceFollowRedirects(false);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("charset", "utf-8");
+            conn.setRequestProperty("Content-Length", Integer.toString(postDataLength ));
+            conn.setUseCaches(false);
+            byte[] outputBytes = urlParameters.getBytes("UTF-8");
+            OutputStream os = conn.getOutputStream();
+            os.write(outputBytes);
+            os.flush();
+            os.close();
+
+            InputStream inputStream = new BufferedInputStream(conn.getInputStream());
+            String ResponseData = convertStreamToString(inputStream);
+            System.out.println(ResponseData);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return;
 
 
 
     }
 
+    public String convertStreamToString(InputStream is) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append((line + "\n"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
+    }
 
 }

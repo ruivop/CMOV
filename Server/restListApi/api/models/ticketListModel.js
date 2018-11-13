@@ -12,7 +12,7 @@ Created_date: {
     type: Buffer
   },
   edate: {
-    type: Date
+    type: String
   }
 });
 
