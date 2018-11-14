@@ -1,5 +1,11 @@
 package org.feup.cmov.customerapp.model;
 
+import android.content.SharedPreferences;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,11 +23,15 @@ public class Ticket {
 
     private String date;
     private String title;
+    private SharedPreferences sharedPreferences;
 
     public Ticket(String date, String title) {
         this.date = date;
         this.title = title;
+
     }
+
+
 
     public String getDate() {
         return date;
@@ -39,11 +49,13 @@ public class Ticket {
         this.title = title;
     }
 
-    public static ArrayList<Ticket> getData(){
+    public static ArrayList<Ticket> getData(SharedPreferences sharedPreferences){
         ArrayList<Ticket> tickets = new ArrayList<>();
 
+        String testRegister = sharedPreferences.getString("Id",null);
+
         try {
-        String request = "http://cmovrestapi.localtunnel.me:3000/tickets";
+        String request = "http://hello.localtunnel.me:3000/tickets";
 
         URL url = null;
         url = new URL( request );
@@ -61,6 +73,21 @@ public class Ticket {
             in.close();
             System.out.println(response.toString());
 
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            for(int i = 0; i < jsonArray.length(); i++){
+                JSONObject jsonobj = jsonArray.getJSONObject(i);
+
+                String performanceCustomer = jsonobj.getString("customer");
+
+
+                String performanceDate = jsonobj.getString("edate");
+                String performanceTitle = jsonobj.getString("performance");
+                System.out.println(performanceDate + " " + performanceTitle);
+                if(testRegister.equals(performanceCustomer)){
+                tickets.add(new Ticket(performanceDate,performanceTitle));}
+            }
+
 
 
         } catch (MalformedURLException e) {
@@ -68,6 +95,8 @@ public class Ticket {
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 

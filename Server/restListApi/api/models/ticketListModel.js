@@ -12,7 +12,7 @@ Created_date: {
   	type: String
   },
   customer: {
-    type: Buffer
+    type: String
   },
   edate: {
     type: String

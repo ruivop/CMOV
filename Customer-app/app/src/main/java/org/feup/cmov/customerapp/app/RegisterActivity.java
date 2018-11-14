@@ -140,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
             String urlParameters  = "publicKey=" + publicKey;
             byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
             int postDataLength = postData.length;
-            String request = "http://cmovrestapi.localtunnel.me:3000/users";
+            String request = "http://hello.localtunnel.me:3000/users";
             URL url = new URL( request );
             HttpURLConnection conn= (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);

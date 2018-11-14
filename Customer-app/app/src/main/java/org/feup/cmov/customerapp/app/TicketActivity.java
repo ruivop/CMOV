@@ -109,9 +109,9 @@ public class TicketActivity extends AppCompatActivity {
             int postDataLength = postData.length;
             String request = "";
             if(number == 1){
-            request = "http://cmovrestapi.localtunnel.me:3000/tickets";}
+            request = "http://hello.localtunnel.me:3000/tickets";}
             else{
-                request = "http://cmovrestapi.localtunnel.me:3000/tickets/" + number;
+                request = "http://hello.localtunnel.me:3000/tickets/" + number;
             }
             URL url = new URL( request );
             HttpURLConnection conn= (HttpURLConnection) url.openConnection();

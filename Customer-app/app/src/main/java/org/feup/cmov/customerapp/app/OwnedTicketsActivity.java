@@ -28,7 +28,7 @@ public class OwnedTicketsActivity extends AppCompatActivity {
     private void setupRecyclerView() {
 
         RecyclerView recyclerView = findViewById(R.id.owned_tickets);
-        TicketAdapter ticketAdapter = new TicketAdapter(this, Ticket.getData());
+        TicketAdapter ticketAdapter = new TicketAdapter(this, Ticket.getData(this.getSharedPreferences("Register", MODE_PRIVATE)));
         recyclerView.setAdapter(ticketAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
