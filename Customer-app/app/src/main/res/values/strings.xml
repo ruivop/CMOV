@@ -16,4 +16,5 @@
     <string name="drawer_close">Close</string>
     <string name="drawer_open">Open</string>
     <string name="purchase">Purchase</string>
+    <string name="order">Order</string>
 </resources>
