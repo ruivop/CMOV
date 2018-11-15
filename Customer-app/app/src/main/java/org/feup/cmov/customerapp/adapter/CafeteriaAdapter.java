@@ -31,7 +31,7 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.MyVi
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = layoutInflater.inflate(R.layout.performance_item, viewGroup, false);
+        View view = layoutInflater.inflate(R.layout.cafeteria_item, viewGroup, false);
         CafeteriaAdapter.MyViewHolder holder = new CafeteriaAdapter.MyViewHolder(view);
 
 

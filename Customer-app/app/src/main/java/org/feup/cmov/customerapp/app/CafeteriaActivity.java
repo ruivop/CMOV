@@ -28,7 +28,7 @@ public class CafeteriaActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
 
-        RecyclerView recyclerView = findViewById(R.id.owned_tickets);
+        RecyclerView recyclerView = findViewById(R.id.cafeteria_items);
         CafeteriaAdapter cafeteriaAdapter = new CafeteriaAdapter(this, CafeteriaItem.getData());
         recyclerView.setAdapter(cafeteriaAdapter);
 
