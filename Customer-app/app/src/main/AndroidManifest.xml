@@ -23,6 +23,7 @@
         <activity android:name=".app.TicketActivity"></activity>
         <activity android:name=".app.OwnedTicketsActivity"></activity>
         <activity android:name=".app.CafeteriaActivity"></activity>
+        <activity android:name=".app.OrderQrActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" /><uses-permission android:name="android.permission.INTERNET" />
 </manifest>
