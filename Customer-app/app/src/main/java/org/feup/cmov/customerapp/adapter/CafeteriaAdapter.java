@@ -72,7 +72,7 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.MyVi
                     CafeteriaActivity caf = (CafeteriaActivity) v.getContext();
 
 
-                    caf.addOrder(title.getText().toString());
+                    caf.addOrder(title.getText().toString(), price.getText().toString());
 
 
                 }

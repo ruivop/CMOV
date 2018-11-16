@@ -12,7 +12,7 @@
         <TextView
             android:id="@+id/order_name"
             android:layout_width="106dp"
-            android:layout_height="42dp"
+            android:layout_height="47dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

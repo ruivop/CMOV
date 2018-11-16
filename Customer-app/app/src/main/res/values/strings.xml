@@ -17,4 +17,5 @@
     <string name="drawer_open">Open</string>
     <string name="purchase">Purchase</string>
     <string name="order">Order</string>
+    <string name="m_order">Make Order</string>
 </resources>
