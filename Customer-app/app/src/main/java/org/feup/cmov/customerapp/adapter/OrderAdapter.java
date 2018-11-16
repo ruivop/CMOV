@@ -35,12 +35,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         return holder;
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
         OrderItem order = orderList.get(i);
         myViewHolder.setData(order, i);
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -56,6 +60,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             super(itemView);
             title = itemView.findViewById(R.id.order_name);
             number = itemView.findViewById(R.id.number_order);
+
+
         }
 
         public void setData(OrderItem order, int i){
