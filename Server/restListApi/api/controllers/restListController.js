@@ -3,7 +3,7 @@
 
 var mongoose = require('mongoose'),
   user = mongoose.model('users'),
-  ticket = mongoose.model('tickets');
+  ticket = mongoose.model('tickets'),
   order = mongoose.model('orders');
 
 exports.list_all_users = function(req, res) {
