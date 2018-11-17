@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Ticket Validation Terminal</string>
+    <string name="scan">Scan</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="icon">icon</string>
+    <string name="error">Error</string>
+    <string name="no_info">No Info</string>
+    <string name="waiting">Waiting</string>
+</resources>
