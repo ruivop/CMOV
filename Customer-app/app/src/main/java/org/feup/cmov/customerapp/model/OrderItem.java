@@ -4,10 +4,12 @@ public class OrderItem {
 
     String title;
     int number;
+    double price;
 
-    public OrderItem(String title, int number) {
+    public OrderItem(String title, int number, double price) {
         this.title = title;
         this.number = number;
+        this.price = price;
     }
 
     public String getTitle() {
@@ -26,5 +28,11 @@ public class OrderItem {
         this.number = number;
     }
 
+    public double getPrice() {
+        return price;
+    }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

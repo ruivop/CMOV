@@ -3,7 +3,8 @@
 
 var mongoose = require('mongoose'),
   user = mongoose.model('users'),
-  ticket = mongoose.model('tickets');
+  ticket = mongoose.model('tickets'),
+  order = mongoose.model('orders');
 
 exports.list_all_users = function(req, res) {
   user.find({}, function(err, user) {
@@ -116,4 +117,53 @@ exports.delete_a_ticket = function(req, res) {
     res.json({ message: 'ticket successfully deleted' });
   });
 };
+
+exports.list_all_orders = function(req, res) {
+  order.find({}, function(err, order) {
+    if (err)
+      res.send(err);
+    res.json(order);
+  });
+};
+
+
+exports.create_a_order = function(req, res) {
+  var new_order = new order(req.body);
+  new_order.save(function(err, order) {
+    if (err)
+      res.send(err);
+    res.json(order);
+  });
+};
+
+exports.read_a_order = function(req, res) {
+  order.findById(req.params.orderId, function(err, order) {
+    if (err)
+      res.send(err);
+    res.json(order);
+  });
+};
+
+exports.update_a_order = function(req, res) {
+  order.findOneAndUpdate({_id: req.params.orderId}, req.body, {new: true}, function(err, order) {
+    if (err)
+      res.send(err);
+    res.json(order);
+  });
+};
+
+exports.delete_a_order = function(req, res) {
+  order.remove({
+    _id: req.params.orderId
+  }, function(err, user) {
+    if (err)
+      res.send(err);
+    res.json({ message: 'order successfully deleted' });
+  });
+};
+
+
+
+
+
 
