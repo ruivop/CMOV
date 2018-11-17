@@ -19,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Button QRButton;
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(this, ConfirmActivity.class);
+        intent.putExtra("orderlist","Burger:3;Coffee:1;Soup:1;Total Cost:12.5");
+        startActivity(intent);
         setContentView(R.layout.activity_main);
         QRButton = (Button) findViewById(R.id.start_button);
 
