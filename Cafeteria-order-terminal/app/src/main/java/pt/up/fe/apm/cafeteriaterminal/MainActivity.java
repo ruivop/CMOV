@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 String format = data.getStringExtra("SCAN_RESULT_FORMAT");
 
                 System.out.println("Format: " + format + "\nMessage: " + contents);
+
+
             }
         }
     }
