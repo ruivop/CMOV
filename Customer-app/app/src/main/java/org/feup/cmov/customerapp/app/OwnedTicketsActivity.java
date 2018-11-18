@@ -49,7 +49,10 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
                         message += ticket.getId() + ":" + ticket.getDate() + ",";
                     }
                 }
-                if(numSelected > 4) {
+                if(numSelected == 0) {
+                    message = "Must select at least one ticket";
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                }else if(numSelected > 4) {
                     message = "Max 4 tickets at a time exceeded";
                     Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                 } else {
