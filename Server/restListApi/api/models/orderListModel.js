@@ -8,7 +8,12 @@ var OrderSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  product: [{ body: String, number: Number }],
+  product:{ 
+  	type: String
+  },
+   number:{
+   	type: String
+   },
   price: {
   	type: Number
   }
