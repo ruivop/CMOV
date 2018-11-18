@@ -120,10 +120,13 @@ exports.delete_a_ticket = function(req, res) {
 
 exports.validate_ticket = function(req, res) {
   ticket.findById(req.params.ticketId, function(err, ticket) {
+  console.log("req.body.userId" + req.body.customer);
     if (err)
       res.send(err);
     else if(ticket != null && ticket.validated)
-      res.send(false);
+      res.send("Alredy Validated");
+    else if(ticket != null && req.body.customer != ticket.customer)
+      res.send("Not the same user");
     else
       update_ticket(req, res);
   });

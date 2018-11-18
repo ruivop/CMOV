@@ -16,11 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.feup.cmov.ticket_validation_terminal.Classes.TicketMessage;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfirmationActivity extends AppCompatActivity {
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
@@ -30,9 +34,14 @@ public class ConfirmationActivity extends AppCompatActivity {
     ImageView image;
     TextView confirmationTitle;
     Button goBackBtn;
-    String content;
+
+    String userPublicId;
+    List<TicketMessage> content = new ArrayList<TicketMessage>();
+    int contentIndexSending = 0;
     int resultHasError = -1;
     boolean hascChekedQR = false;
+    int numberOfRejects = 0;
+    String comunicationErrors = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +67,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                 this.hascChekedQR = false;
 
             resultHasError = savedInstanceState.getInt("resultHasError");
-            resultOfRestCall();
+            updateVisual();
 
             infos.setText(savedInstanceState.getString("infos"));
         }
@@ -106,17 +115,72 @@ public class ConfirmationActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                content = data.getStringExtra("SCAN_RESULT");
-                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+                String recceived = data.getStringExtra("SCAN_RESULT");
 
-                String[] args = {serverIp, content};
+                try {
+                    String[] splitPublicIdFromMessage = recceived.split("-");
+                    this.userPublicId = splitPublicIdFromMessage[0];
+
+                    String receivedQrMessages[] = splitPublicIdFromMessage[1].split(",");
+                    String date = null;
+                    for(String message : receivedQrMessages){
+                        String[] ticketStrings = message.split(":");
+                        if(date != null && date.compareTo(ticketStrings[1]) != 0) {
+                            infos.setText("All tickets must be on the same date");
+                            resultHasError = 1;
+                            updateVisual();
+                            return;
+                        }
+                        if(date == null) {
+                            date = ticketStrings[1];
+                        }
+                        this.content.add(new TicketMessage(ticketStrings[0], ticketStrings[1]));
+                    }
+
+                } catch (Exception e) {
+                    infos.setText("Format of QR is not valid");
+                    resultHasError = 1;
+                    updateVisual();
+                    return;
+                }
+
                 ChUser restProcess = new ChUser();
-                restProcess.execute(args);
+                restProcess.execute();
             }
         }
     }
 
-    protected void resultOfRestCall() {
+    protected void resultOfRestCall(int hasError) {
+        contentIndexSending++;
+
+        if(hasError != 0) {
+            resultHasError = 1;
+            numberOfRejects++;
+        }
+
+        if(contentIndexSending == content.size()) {
+            if(resultHasError == -1) {
+                resultHasError = 0;
+                infos.setText("All the " + contentIndexSending + " tickets were validated.");
+            } else {
+                resultHasError = 1;
+                String error = "There are " + numberOfRejects + " rejected tickets, from "+ contentIndexSending + " total:\n";
+                for(TicketMessage message : content) {
+                    if(message.getErrorMessage().length() > 0) {
+                        error +=  "   ->" + message.getErrorMessage() + "\n";
+                    }
+                }
+                infos.setText(error);
+            }
+            updateVisual();
+            return;
+        }
+
+        ChUser restProcess = new ChUser();
+        restProcess.execute();
+    }
+
+    private void updateVisual() {
         if(resultHasError == 0) {
             confirmationTitle.setText(R.string.confirmed);
             image.setImageResource(R.drawable.ic_check_black_24dp);
@@ -126,24 +190,15 @@ public class ConfirmationActivity extends AppCompatActivity {
         }
     }
 
-    private void writeText(final String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                infos.setText(text);
-            }
-        });
-    }
-
     private class ChUser extends AsyncTask<String, Void, Void> {
+        private int hasError = -1;
         @Override
         protected Void doInBackground(String... strings) {
-            String address = strings[0];
-            String id = strings[1];
             URL url;
             HttpURLConnection urlConnection = null;
+            TicketMessage ticket = content.get(contentIndexSending);
             try {
-                url = new URL("http://" + address + ":3000/tickets/validate/" + id);
+                url = new URL("http://" + serverIp + ":3000/tickets/validate/" + ticket.getTicketId());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestMethod("PUT");
@@ -151,65 +206,68 @@ public class ConfirmationActivity extends AppCompatActivity {
                 urlConnection.setUseCaches (false);
 
                 DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
-                /*String payload = "\"" + uname + "\"";
-                appendText("payload: " + payload);
-                outputStream.writeBytes(payload);*/
+                String payload = "{\"customer\":\"" + userPublicId + "\"}";
+                outputStream.writeBytes(payload);
                 outputStream.flush();
                 outputStream.close();
 
                 // get response
                 int responseCode = urlConnection.getResponseCode();
                 if(responseCode == 200) {
-                    resultHasError = 0;
+                    hasError = 0;
 
                     try {
                         java.util.Scanner s = new java.util.Scanner(urlConnection.getInputStream()).useDelimiter("\\A");
                         String body = s.hasNext() ? s.next() : "";
-                        if(body.compareTo("false") == 0) {
-                            writeText("Error for server " + serverIp + ":\n Ticket Alredy used");
-                            resultHasError = 1;
+
+                        System.out.println("body: " + body);
+
+                        if(body.compareTo("Alredy Validated") == 0) {
+                            ticket.writeText("Ticket Alredy used");
+                            hasError = 1;
                             return null;
-                        }
-                        if(body.compareTo("Not Valid Ticket") == 0) {
-                            writeText("Error for server " + serverIp + ":\n This is not a ticket");
-                            resultHasError = 1;
+                        }else if(body.compareTo("Not Valid Ticket") == 0) {
+                            ticket.writeText("This is not a ticket");
+                            hasError = 1;
+                            return null;
+                        }else if(body.compareTo("Not the same user") == 0) {
+                            ticket.writeText("Not the same user");
+                            hasError = 1;
                             return null;
                         }
                         String[] words = body.split(",");
                         for (String word : words) {
                             if (word.split(":")[0].compareTo("\"performance\"") == 0) {
-                                writeText("Performance: " + word.split(":")[1]);
+                                ticket.writeText("Accepted ticket for " + word.split(":")[1]);
                             }
                         }
                     } catch (IOException e) {
-                        writeText("Error for server " + serverIp + ":\n The ticket is not valid");
-                        resultHasError = 1;
+                        ticket.writeText("The ticket is not valid");
+                        hasError = 1;
                     }
                 } else {
-                    writeText("Error for server " + serverIp + ":\n Code: " + responseCode);
-                    resultHasError = 1;
+                    ticket.writeText("Code: " + responseCode);
+                    hasError = 1;
                 }
             }
             catch (IOException e) {
-                writeText("Error for server " + serverIp + ":\n Comunicating with the server");
-                resultHasError = 1;
+                ticket.writeText("Comunicating with the server");
+                hasError = 1;
             }
             catch (Exception e) {
-                writeText("Error for server " + serverIp + ":\n" + e.toString());
-                resultHasError = 1;
+                ticket.writeText(e.toString());
+                hasError = 1;
             }
             finally {
                 if(urlConnection != null)
                     urlConnection.disconnect();
             }
-            System.out.println("123 : " + resultHasError);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
-            System.out.println("234 : " + resultHasError);
-            resultOfRestCall();
+            resultOfRestCall(hasError);
         }
     }
 }
