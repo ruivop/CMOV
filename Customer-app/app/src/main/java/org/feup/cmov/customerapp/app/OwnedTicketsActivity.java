@@ -63,7 +63,7 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
 
 
     private void setupRecyclerView() {
-        Ticket.getData(this.getSharedPreferences("Register", MODE_PRIVATE), this);
+        Ticket.getData(this.getSharedPreferences("Register", MODE_PRIVATE), this, this);
 
     }
 

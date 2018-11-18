@@ -1,11 +1,17 @@
 package org.feup.cmov.customerapp.model;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.feup.cmov.customerapp.TicketResponser;
+import org.feup.cmov.customerapp.utils.DatabaseHelper;
 import org.feup.cmov.customerapp.utils.HttpUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,7 +80,9 @@ public class Ticket {
         this.used = used;
     }
 
-    public static void getData(SharedPreferences sharedPreferences, final TicketResponser responser) {
+    public static void getData(SharedPreferences sharedPreferences, final TicketResponser responser, Context context) {
+        final DatabaseHelper mDbHelper = new DatabaseHelper(context);
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         //final String testRegister = sharedPreferences.getString("Id", null);
         final String testRegister = "123123123"; //TODO: por o sharedPreferences no meu pc a funcioinar
@@ -83,7 +91,7 @@ public class Ticket {
             HttpUtils.get("tickets", new RequestParams(), new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    ArrayList<Ticket> tickets = new ArrayList<>();
+
                     try {
                         JSONArray jsonArray = new JSONArray(new String(responseBody));
 
@@ -92,20 +100,52 @@ public class Ticket {
 
                             jsonobj = jsonArray.getJSONObject(i);
 
-
                             String performanceCustomer = jsonobj.getString("customer");
-                            String performanceDate = jsonobj.getString("edate");
-                            String performanceTitle = jsonobj.getString("performance");
-                            String performanceId = jsonobj.getString("_id");
-                            boolean performanceUsed = jsonobj.getBoolean("validated");
 
                             if (testRegister.equals(performanceCustomer)) {
-                                tickets.add(new Ticket(performanceId, performanceDate, performanceTitle, performanceUsed));
+                                ContentValues values = new ContentValues();
+                                values.put(DataBaseContract.Ticket._ID, jsonobj.getString("_id"));
+                                values.put(DataBaseContract.Ticket.DATE, jsonobj.getString("edate"));
+                                values.put(DataBaseContract.Ticket.PERFORMANCE, jsonobj.getString("performance"));
+                                values.put(DataBaseContract.Ticket.VALIDATED, jsonobj.getString("validated"));
+
+                                db.insert(DataBaseContract.Ticket.TABLE_NAME, null, values);
                             }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    ArrayList<Ticket> tickets = new ArrayList<>();
+
+                    String[] projection = {
+                            DataBaseContract.Ticket._ID,
+                            DataBaseContract.Ticket.DATE,
+                            DataBaseContract.Ticket.PERFORMANCE,
+                            DataBaseContract.Ticket.VALIDATED
+                    };
+                    String sortOrder = DataBaseContract.Ticket.DATE + " ASC";
+
+                    Cursor cursor = db.query(
+                            DataBaseContract.Ticket.TABLE_NAME,   // The table to query
+                            projection,             // The array of columns to return (pass null to get all)
+                            null,              // The columns for the WHERE clause
+                            null,          // The values for the WHERE clause
+                            null,                   // don't group the rows
+                            null,                   // don't filter by row groups
+                            sortOrder               // The sort order
+                    );
+
+                    while(cursor.moveToNext()) {
+                        String performanceId = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket._ID));
+                        String performanceDate = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.DATE));
+                        String performanceTitle = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.PERFORMANCE));
+                        boolean performanceUsed = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.VALIDATED)) > 0;
+                        tickets.add(new Ticket(performanceId, performanceDate, performanceTitle, performanceUsed));
+                    }
+                    cursor.close();
+
+
                     responser.onResponseReceived(tickets);
                 }
 
