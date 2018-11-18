@@ -18,4 +18,5 @@
     <string name="purchase">Purchase</string>
     <string name="order">Order</string>
     <string name="m_order">Make Order</string>
+    <string name="validate">Validate</string>
 </resources>

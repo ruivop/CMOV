@@ -2,36 +2,45 @@ package org.feup.cmov.customerapp.model;
 
 import android.content.SharedPreferences;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.feup.cmov.customerapp.TicketResponser;
+import org.feup.cmov.customerapp.utils.HttpUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 public class Ticket {
 
+    public static final String serverIp = "192.168.0.101";
+
+    private String id;
     private String date;
     private String title;
-    private SharedPreferences sharedPreferences;
+    private boolean used;
 
-    public Ticket(String date, String title) {
+    private boolean isSelected;
+
+    public Ticket(String id, String date, String title, boolean used) {
+        this.id = id;
         this.date = date;
         this.title = title;
-
+        this.used = used;
+        isSelected= false;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getDate() {
         return date;
@@ -49,58 +58,66 @@ public class Ticket {
         this.title = title;
     }
 
-    public static ArrayList<Ticket> getData(SharedPreferences sharedPreferences){
-        ArrayList<Ticket> tickets = new ArrayList<>();
+    public String getId() {
+        return id;
+    }
 
-        String testRegister = sharedPreferences.getString("Id",null);
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public boolean isUsed() {
+        return used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+    public static void getData(SharedPreferences sharedPreferences, final TicketResponser responser) {
+
+        //final String testRegister = sharedPreferences.getString("Id", null);
+        final String testRegister = "123123123"; //TODO: por o sharedPreferences no meu pc a funcioinar
         try {
-        String request = "http://hello.localtunnel.me:3000/tickets";
+            String request = "http://" + serverIp + ":3000/tickets";
+            HttpUtils.get("tickets", new RequestParams(), new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    ArrayList<Ticket> tickets = new ArrayList<>();
+                    try {
+                        JSONArray jsonArray = new JSONArray(new String(responseBody));
 
-        URL url = null;
-        url = new URL( request );
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonobj = null;
 
-        HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        int responseCode = conn.getResponseCode();
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while((inputLine = in.readLine()) != null){
-                response.append(inputLine);
-            }
-            in.close();
-            System.out.println(response.toString());
-
-            JSONArray jsonArray = new JSONArray(response.toString());
-
-            for(int i = 0; i < jsonArray.length(); i++){
-                JSONObject jsonobj = jsonArray.getJSONObject(i);
-
-                String performanceCustomer = jsonobj.getString("customer");
+                            jsonobj = jsonArray.getJSONObject(i);
 
 
-                String performanceDate = jsonobj.getString("edate");
-                String performanceTitle = jsonobj.getString("performance");
-                System.out.println(performanceDate + " " + performanceTitle);
-                if(testRegister.equals(performanceCustomer)){
-                tickets.add(new Ticket(performanceDate,performanceTitle));}
-            }
+                            String performanceCustomer = jsonobj.getString("customer");
+                            String performanceDate = jsonobj.getString("edate");
+                            String performanceTitle = jsonobj.getString("performance");
+                            String performanceId = jsonobj.getString("_id");
+                            boolean performanceUsed = jsonobj.getBoolean("validated");
 
+                            if (testRegister.equals(performanceCustomer)) {
+                                tickets.add(new Ticket(performanceId, performanceDate, performanceTitle, performanceUsed));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    responser.onResponseReceived(tickets);
+                }
 
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    System.out.println("onFailure - statusCode: " + statusCode);
+                    responser.onResponseReceived(null);
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return tickets;
     }
 
 }
