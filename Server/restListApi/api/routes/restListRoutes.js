@@ -22,12 +22,15 @@ module.exports = function(app) {
     .post(restList.create_more_tickets)
     .put(restList.update_a_ticket)
     .delete(restList.delete_a_ticket);
+    
+  app.route('/tickets/validate/:ticketId')
+    .put(restList.validate_ticket);
 
-    app.route('/orders')
+  app.route('/orders')
     .get(restList.list_all_orders)
     .post(restList.create_a_order);
 
-   app.route('/orders/:orderId')
+  app.route('/orders/:orderId')
     .get(restList.read_a_order)
     .put(restList.update_a_order)
     .delete(restList.delete_a_order);

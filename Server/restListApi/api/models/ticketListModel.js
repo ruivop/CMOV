@@ -16,6 +16,10 @@ Created_date: {
   },
   edate: {
     type: String
+  },
+  validated: {
+    type: Boolean,
+    default: false
   }
 });
 

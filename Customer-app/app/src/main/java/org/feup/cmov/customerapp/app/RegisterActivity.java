@@ -80,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
                 ((RegisterActivity) context).updateFields();
                 Intent intent = new Intent(context, PerformancesActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

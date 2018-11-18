@@ -118,6 +118,33 @@ exports.delete_a_ticket = function(req, res) {
   });
 };
 
+exports.validate_ticket = function(req, res) {
+  ticket.findById(req.params.ticketId, function(err, ticket) {
+    if (err)
+      res.send(err);
+    else if(ticket != null && ticket.validated)
+      res.send(false);
+    else
+      update_ticket(req, res);
+  });
+  
+
+};
+
+function update_ticket(req, res) {
+    ticket.findOneAndUpdate({_id: req.params.ticketId}, {$set:{validated:true}}, {new: true}, function(err, ticket) {
+      if (err)
+        res.send(err);
+      else if(ticket == null)
+        res.send("Not Valid Ticket");
+      else
+        res.json(ticket);
+    });
+}
+
+
+
+
 exports.list_all_orders = function(req, res) {
   order.find({}, function(err, order) {
     if (err)

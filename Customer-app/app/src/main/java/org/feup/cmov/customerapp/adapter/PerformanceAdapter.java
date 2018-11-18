@@ -25,8 +25,8 @@ import static android.content.ContentValues.TAG;
 
 public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.MyViewHolder> {
 
-    List<Performance> performanceList;
-    LayoutInflater layoutInflater;
+    private List<Performance> performanceList;
+    private LayoutInflater layoutInflater;
 
     public PerformanceAdapter(Context context, List<Performance> performanceList) {
         this.performanceList = performanceList;
