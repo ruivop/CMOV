@@ -66,28 +66,35 @@ public class CafeteriaItem {
         cafItems.add(new CafeteriaItem("Burger", R.drawable.burguerimage, 3.5, 1000));
 
         List<Vouchers> vouchers = getVouchers(context);
+        ArrayList<CafeteriaItem> vouchersItems = new ArrayList<CafeteriaItem>();
 
-        int numCoffees = 0;
-        int numSoup = 0;
-        int numBurger = 0;
-        for(Vouchers v: vouchers){
-            if(v.prduct.compareTo("coffee") == 0)
-                numCoffees++;
-            else if(v.prduct.compareTo("soup") == 0)
-                numSoup++;
-            else if(v.prduct.compareTo("burger") == 0)
-                numBurger++;
+        for(Vouchers v: vouchers) {
+            String capitalized = v.prduct.substring(0, 1).toUpperCase() + v.prduct.substring(1);
+
+            //increase thevalue if it it already there
+            boolean invouchers = false;
+            for (CafeteriaItem cafeteriaItem : vouchersItems) {
+
+                if (cafeteriaItem.title.contains(capitalized)) {
+                    cafeteriaItem.setQuantity(cafeteriaItem.getQuantity() + 1);
+                    invouchers = true;
+                    break;
+                }
+            }
+
+            //add it, if not
+            if(!invouchers) {
+                for(CafeteriaItem cafeteriaItem: cafItems) {
+                    if(cafeteriaItem.title.compareTo(capitalized) == 0) {
+                        vouchersItems.add(new CafeteriaItem(capitalized + " Voucher",cafeteriaItem.image, 0, 1));
+                        break;
+                    }
+                }
+            }
         }
-
-        if(numCoffees > 0) {
-            cafItems.add(new CafeteriaItem("Coffee Voucher (" + numCoffees + " available)", R.drawable.coffeeimage, 0, numCoffees));
-        } else if(numSoup > 0) {
-            cafItems.add(new CafeteriaItem("Soup  Voucher (" + numSoup + " available)", R.drawable.soupimage, 0, numSoup));
-        } else if(numBurger > 0) {
-            cafItems.add(new CafeteriaItem("Burger  Voucher (" + numBurger + " available)", R.drawable.burguerimage, 0, numBurger));
-        }
-
-        return cafItems;
+        ArrayList<CafeteriaItem> newList = new ArrayList<CafeteriaItem>(cafItems);
+        newList.addAll(vouchersItems);
+        return newList;
     }
 
     public static List<Vouchers> getVouchers(Context context) {

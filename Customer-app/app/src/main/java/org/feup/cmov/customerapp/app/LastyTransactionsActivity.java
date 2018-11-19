@@ -98,7 +98,7 @@ public class LastyTransactionsActivity extends AppCompatActivity implements Tick
             double orderPrice = cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseContract.Order.PRICE));
             String orderCreatedDate = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Order.CREATED_DATE));
             lastTransactions.add(new LastTransactions(LastTransactions.TransctionType.Order,
-                    orderContents.replace(";", "\n").replace(":", " - ") + "\nTOTAL: " + orderPrice + "$",
+                    orderContents.replaceFirst(".*?;", "").replace(";", "\n").replace(":", " - ") + "$",
                     orderCreatedDate));
         }
         cursor.close();

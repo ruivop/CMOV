@@ -76,7 +76,10 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.MyVi
 
         public void setData(CafeteriaItem cafeteria, int i){
             title.setText(cafeteria.getTitle());
-            price.setText(String.valueOf(cafeteria.getPrice()));
+            if(cafeteria.getTitle().contains("Voucher"))
+                price.setText("FREE \n(" + cafeteria.getQuantity() + " left)");
+            else
+                price.setText(String.valueOf(cafeteria.getPrice()));
             image.setImageResource(cafeteria.getImage());
         }
     }

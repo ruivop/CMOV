@@ -56,7 +56,7 @@ public class CafeteriaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Cafeteria");
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             orderItemList = savedInstanceState.getParcelableArrayList("list");
         }
         setupRecyclerView();
@@ -66,18 +66,19 @@ public class CafeteriaActivity extends AppCompatActivity {
         but_qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(orderItemList.size() == 0){
+                if (orderItemList.size() == 0) {
                     Toast.makeText(context, "Must select at least one product", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 String order = getText();
-                if(getText().equals("Invalid")){
+                if (getText().equals("Invalid")) {
                     Toast.makeText(context, "You can't have more than 2 vouchers.", Toast.LENGTH_LONG).show();
 
-                }else{
-                Intent intent = new Intent(context, OrderQrActivity.class);
-                intent.putExtra("text",order);
-                startActivity(intent);}
+                } else {
+                    Intent intent = new Intent(context, OrderQrActivity.class);
+                    intent.putExtra("text", order);
+                    startActivity(intent);
+                }
             }
         });
         setupDrawer();
@@ -110,7 +111,7 @@ public class CafeteriaActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.cafeteria_items);
         RecyclerView recyclerView2 = findViewById(R.id.order_items);
         CafeteriaAdapter cafeteriaAdapter = new CafeteriaAdapter(this, CafeteriaItem.getData(context));
-        OrderAdapter  orderAdapter = new OrderAdapter(this,orderItemList);
+        OrderAdapter orderAdapter = new OrderAdapter(this, orderItemList);
         oa = orderAdapter;
         recyclerView.setAdapter(cafeteriaAdapter);
         recyclerView2.setAdapter(orderAdapter);
@@ -130,25 +131,22 @@ public class CafeteriaActivity extends AppCompatActivity {
         String finaltext = "";
         double totalcost = 0;
         int numVouchers = 0;
-        for(int i = 0; i<orderItemList.size(); i++) {
-            if(orderItemList.get(i).getTitle().contains("Voucher")) {
+        for (int i = 0; i < orderItemList.size(); i++) {
+            if (orderItemList.get(i).getTitle().contains("Voucher")) {
                 numVouchers = orderItemList.get(i).getNumber();
-                if(numVouchers > 2){
+                if (numVouchers > 2) {
                     return "Invalid";
                 }
-                finaltext += orderItemList.get(i).getTitle().substring(0, 14) + ":" + orderItemList.get(i).getNumber() + ";";
-                totalcost += (orderItemList.get(i).getPrice() * orderItemList.get(i).getNumber());
-            } else {
-                finaltext += orderItemList.get(i).getTitle() + ":" + orderItemList.get(i).getNumber() + ";";
-                totalcost += (orderItemList.get(i).getPrice() * orderItemList.get(i).getNumber());
             }
+            finaltext += orderItemList.get(i).getTitle() + ":" + orderItemList.get(i).getNumber() + ";";
+            totalcost += (orderItemList.get(i).getPrice() * orderItemList.get(i).getNumber());
         }
         finaltext += "Cost:" + String.valueOf(totalcost);
 
 
         SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
         String testRegister = sp1.getString("Id", null);
-        finaltext = testRegister + ";" + finaltext ;
+        finaltext = testRegister + ";" + finaltext;
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSS");
         String dateString = formatter.format(new java.util.Date());
@@ -159,14 +157,14 @@ public class CafeteriaActivity extends AppCompatActivity {
         return finaltext;
     }
 
-    public void addOrder(CafeteriaItem cafeteriaItem){
+    public void addOrder(CafeteriaItem cafeteriaItem) {
 
         double cost = cafeteriaItem.getPrice();
         double totalcost = 0;
         Boolean verifier = true;
-        for(int i = 0; i< orderItemList.size(); i++){
-            if(orderItemList.get(i).getTitle().equals(cafeteriaItem.getTitle())){
-                if(orderItemList.get(i).getNumber() >= cafeteriaItem.getQuantity()) {
+        for (int i = 0; i < orderItemList.size(); i++) {
+            if (orderItemList.get(i).getTitle().equals(cafeteriaItem.getTitle())) {
+                if (orderItemList.get(i).getNumber() >= cafeteriaItem.getQuantity()) {
                     Toast.makeText(context, "Max Available", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -175,9 +173,9 @@ public class CafeteriaActivity extends AppCompatActivity {
             }
             totalcost += (orderItemList.get(i).getPrice() * orderItemList.get(i).getNumber());
         }
-        if(verifier){
+        if (verifier) {
             orderItemList.add(new OrderItem(cafeteriaItem.getTitle(), 1, cost));
-            totalcost +=  cost;
+            totalcost += cost;
         }
 
         TextView text = findViewById(R.id.order_cost);
