@@ -2,6 +2,7 @@ package org.feup.cmov.customerapp.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -69,9 +70,14 @@ public class CafeteriaActivity extends AppCompatActivity {
                     Toast.makeText(context, "Must select at least one product", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                String order = getText();
+                if(getText().equals("Invalid")){
+                    Toast.makeText(context, "You can't have more than 2 vouchers.", Toast.LENGTH_LONG).show();
+
+                }else{
                 Intent intent = new Intent(context, OrderQrActivity.class);
-                intent.putExtra("text",getText());
-                startActivity(intent);
+                intent.putExtra("text",order);
+                startActivity(intent);}
             }
         });
         setupDrawer();
@@ -127,6 +133,9 @@ public class CafeteriaActivity extends AppCompatActivity {
         for(int i = 0; i<orderItemList.size(); i++) {
             if(orderItemList.get(i).getTitle().contains("Voucher")) {
                 numVouchers = orderItemList.get(i).getNumber();
+                if(numVouchers > 2){
+                    return "Invalid";
+                }
                 finaltext += orderItemList.get(i).getTitle().substring(0, 14) + ":" + orderItemList.get(i).getNumber() + ";";
                 totalcost += (orderItemList.get(i).getPrice() * orderItemList.get(i).getNumber());
             } else {
@@ -136,8 +145,14 @@ public class CafeteriaActivity extends AppCompatActivity {
         }
         finaltext += "Cost:" + String.valueOf(totalcost);
 
+
+        SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
+        String testRegister = sp1.getString("Id", null);
+        finaltext = testRegister + ";" + finaltext ;
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSS");
         String dateString = formatter.format(new java.util.Date());
+
         CafeteriaItem.addOrder(context, finaltext, totalcost, dateString);
 
         CafeteriaItem.deleteVouchers(context, vouchers, numVouchers);

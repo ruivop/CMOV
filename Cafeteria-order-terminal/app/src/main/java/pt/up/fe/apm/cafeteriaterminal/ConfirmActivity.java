@@ -41,7 +41,8 @@ public class ConfirmActivity extends AppCompatActivity {
         String costlist = "";
         Double totalPrice = 0.0;
         int nVouchers =0;
-        for(int i = 0; i < separated.length-1; i++){
+        String userId = separated[0];
+        for(int i = 1; i < separated.length-1; i++){
             String[] separated2 = separated[i].split(":");
 
             if(separated2[0].equals("Coffee Voucher")){

@@ -10,6 +10,9 @@ var VoucherSchema = new Schema({
   },
   product:{ 
   	type: String
+  },
+  userid:{
+    type: String 
   }
 });
 

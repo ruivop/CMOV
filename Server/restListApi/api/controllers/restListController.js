@@ -77,7 +77,7 @@ exports.create_a_ticket = function(req, res) {
       resp[0] = err;
     else
       resp[0] = [ticket];
-      var new_voucher = new voucher({product:'coffee'});
+      var new_voucher = new voucher({product:'coffee',userid: req.body.customer});
       new_voucher.save(function(err, voucher){
         if(err)
           resp[1] = err;
@@ -93,7 +93,7 @@ exports.create_more_tickets = function(req, res) {
   var array_voucher = [];
   for(var i = 0; i < req.params.ticketId ; i++){
     array[i] = req.body;
-    array_voucher[i] = {product:"coffee"};
+    array_voucher[i] = {product:"coffee",userid: req.body.customer};
   }
   var resp = [];
   ticket.create(array ,function(err, ticket) {
@@ -241,6 +241,14 @@ exports.create_a_voucher = function(req, res) {
 
 exports.read_a_voucher = function(req, res) {
   voucher.findById(req.params.voucherId, function(err, voucher) {
+    if (err)
+      res.send(err);
+    res.json(voucher);
+  });
+};
+
+exports.read_a_voucher_user = function(req, res) {
+  voucher.find({userid: req.params.voucherUser}, function(err, voucher) {
     if (err)
       res.send(err);
     res.json(voucher);

@@ -42,5 +42,8 @@ module.exports = function(app) {
   app.route('/vouchers/:voucherId')
     .get(restList.read_a_voucher)
     .put(restList.update_a_voucher)
-    .delete(restList.delete_a_voucher);
+    .delete(restList.delete_a_voucher)
+
+  app.route('/vouchers/user/:voucherUser')
+    .get(restList.read_a_voucher_user);
 };
