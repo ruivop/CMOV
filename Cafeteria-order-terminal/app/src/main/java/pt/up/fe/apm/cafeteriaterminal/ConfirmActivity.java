@@ -42,6 +42,7 @@ public class ConfirmActivity extends AppCompatActivity {
         String costlist = "";
         Double totalPrice = 0.0;
         int nVouchers =0;
+        int nPVouchers = 0;
         String userId = separated[0];
         for(int i = 1; i < separated.length-1; i++){
             String[] separated2 = separated[i].split(":");
@@ -49,11 +50,17 @@ public class ConfirmActivity extends AppCompatActivity {
             if(separated2[0].equals("Coffee Voucher")){
                 nVouchers = Integer.parseInt(separated2[1]);
             }
+            else if(separated2[0].equals("Popcorn Voucher")){
+                nPVouchers = Integer.parseInt(separated2[1]);
+            }
+                productlist = productlist + "-" + separated2[0];
+                costlist = costlist + "-" + separated2[1];
 
-            productlist = productlist + "-" + separated2[0];
-            costlist = costlist + "-" + separated2[1];
+
+
 
             array_list3.add(separated2[0] + " - " + separated2[1]);
+
 
 
 
@@ -70,6 +77,7 @@ public class ConfirmActivity extends AppCompatActivity {
         final Double finalPrice = totalPrice;
         final String finalUserId = userId;
         final int numberVouchers = nVouchers;
+        final int numberPVouchers = nPVouchers;
 
         //System.out.println(array_list);
         //System.out.println(array_list2);
@@ -90,7 +98,7 @@ public class ConfirmActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                     String urlParameters = "product=" + plist + "&number=" + clist + "&price=" + String.valueOf(finalPrice) + "&userid=" + finalUserId ;
-                    sendData(urlParameters, finalUserId,numberVouchers);
+                    sendData(urlParameters, finalUserId,numberVouchers,numberPVouchers);
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
                     //startActivity(intent);
 
@@ -130,7 +138,7 @@ public class ConfirmActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private void sendData(String urlParameters, String userid, int nVouchers){
+    private void sendData(String urlParameters, String userid, int nVouchers, int nPVouchers){
         try{
 
 
@@ -158,17 +166,25 @@ public class ConfirmActivity extends AppCompatActivity {
 
             int nAvailableVouchers = 0;
             ArrayList<String> ids = new ArrayList<>();
+            ArrayList<String> idsp = new ArrayList<>();
 
             for(int i = 0; i<separated.length; i++){
-                if(separated[i].contains("_id")){
+                if(separated[i].contains("_id") && separated[i+2].contains("coffee")){
                     System.out.println(separated[i] + " AND " + separated[i+1]);
                     String[] sp = separated[i+1].split(",");
                     System.out.println(sp[0]);
                     ids.add(sp[0].replaceAll("\"",""));
                 }
+                if(separated[i].contains("_id") && separated[i+2].contains("popcorn")){
+                    System.out.println(separated[i] + " AND " + separated[i+1]);
+                    String[] sp = separated[i+1].split(",");
+                    System.out.println(sp[0]);
+                    idsp.add(sp[0].replaceAll("\"",""));
+                }
+
             }
 
-            if(ids.size() < nVouchers){
+            if((ids.size() + idsp.size()) < nVouchers){
                 Toast.makeText(this.getLayoutInflater().getContext(),"Not Enough Vouchers Validated", Toast.LENGTH_SHORT).show();
                 return;
             }else{
@@ -182,6 +198,16 @@ public class ConfirmActivity extends AppCompatActivity {
                     httpCon.setRequestMethod("DELETE");
                     System.out.println(httpCon.getResponseCode());
                 }
+                for(int i = 0; i < nPVouchers; i++){
+                    URL url = new URL("http://hello.localtunnel.me:3000/vouchers/" + idsp.get(i));
+                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                    httpCon.setDoOutput(true);
+                    httpCon.setRequestProperty(
+                            "Content-Type", "application/x-www-form-urlencoded" );
+                    httpCon.setRequestMethod("DELETE");
+                    System.out.println(httpCon.getResponseCode());
+                }
+
             }
 
 
