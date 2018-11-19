@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,11 +54,10 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
             @Override
             public void onClick(View v) {
                 if (activity != null) {
-                    Context con = v.getContext();
-                    Intent intent = new Intent(con, activity);
-                    con.startActivity(intent);
+                    ((AppCompatActivity) context).onBackPressed();
+                    Intent intent = new Intent(context, activity);
+                    context.startActivity(intent);
                 }
-
             }
         });
     }

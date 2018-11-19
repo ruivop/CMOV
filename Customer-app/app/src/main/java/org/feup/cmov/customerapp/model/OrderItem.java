@@ -1,6 +1,9 @@
 package org.feup.cmov.customerapp.model;
 
-public class OrderItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class OrderItem implements Parcelable {
 
     String title;
     int number;
@@ -35,4 +38,35 @@ public class OrderItem {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    protected OrderItem(Parcel in) {
+        title = in.readString();
+        number = in.readInt();
+        price = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeInt(number);
+        dest.writeDouble(price);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<OrderItem> CREATOR = new Parcelable.Creator<OrderItem>() {
+        @Override
+        public OrderItem createFromParcel(Parcel in) {
+            return new OrderItem(in);
+        }
+
+        @Override
+        public OrderItem[] newArray(int size) {
+            return new OrderItem[size];
+        }
+    };
 }

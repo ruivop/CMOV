@@ -3,6 +3,7 @@ package org.feup.cmov.customerapp.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -33,17 +34,24 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
     Context context;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
+    ArrayList<Ticket> tickets;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owned_tickets);
 
-        setupRecyclerView();
         context = this;
         validateBtn = findViewById(R.id.validate_tickets_btn);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Next Performances");
+
+        if(savedInstanceState != null){
+            tickets = savedInstanceState.getParcelableArrayList("list");
+            onResponseReceived(tickets);
+        } else {
+            setupRecyclerView();
+        }
 
         validateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +80,12 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
             }
         });
         setupDrawer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("list", tickets);
     }
 
     private void setupDrawer() {
@@ -105,6 +119,7 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
                 return rhs.getDate().compareTo(lhs.getDate());
             }
         });
+        this.tickets = tickets;
 
         RecyclerView recyclerView = findViewById(R.id.owned_tickets);
         ticketAdapter = new TicketAdapter(this, tickets);

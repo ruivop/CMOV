@@ -3,7 +3,9 @@ package org.feup.cmov.customerapp.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -36,7 +38,7 @@ import java.util.List;
 
 public class CafeteriaActivity extends AppCompatActivity {
 
-    List<OrderItem> orderItemList = new ArrayList<>();
+    ArrayList<OrderItem> orderItemList = new ArrayList<>();
     List<Vouchers> vouchers;
     OrderAdapter oa;
     Context context;
@@ -53,12 +55,13 @@ public class CafeteriaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Cafeteria");
 
+        if(savedInstanceState != null) {
+            orderItemList = savedInstanceState.getParcelableArrayList("list");
+        }
         setupRecyclerView();
         vouchers = CafeteriaItem.getVouchers(context);
 
         Button but_qr = findViewById(R.id.order_button);
-
-
         but_qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,10 +77,26 @@ public class CafeteriaActivity extends AppCompatActivity {
         setupDrawer();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList("list", orderItemList);
+    }
+
     private void setupDrawer() {
         NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.nav_drawer_frag);
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerFragment.setupDrawer(R.id.nav_drawer_frag, drawerLayout, toolbar);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void setupRecyclerView() {

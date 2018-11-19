@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class Ticket {
+public class Ticket implements Parcelable {
 
     public static final String serverIp = "192.168.0.101";
 
@@ -39,8 +41,21 @@ public class Ticket {
         this.date = date;
         this.title = title;
         this.used = used;
-        isSelected= false;
+        isSelected = false;
         this.created_date = created_date;
+    }
+
+    public Ticket(Parcel in) {
+        String[] data = new String[3];
+
+        in.readStringArray(data);
+
+        this.id = data[0];
+        this.date = data[1];
+        this.title = data[2];
+        this.used = new Boolean(data[3]);
+        this.created_date = data[4];
+        this.isSelected = new Boolean(data[5]);
     }
 
     public String getCreated_date() {
@@ -95,14 +110,13 @@ public class Ticket {
         final DatabaseHelper mDbHelper = new DatabaseHelper(context);
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        if(!HttpUtils.isNetworkAvailable(context)) {
+        if (!HttpUtils.isNetworkAvailable(context)) {
             sendData(db, responser);
             return;
         }
 
         final String testRegister = sharedPreferences.getString("Id", null);
         try {
-            String request = "http://" + serverIp + ":3000/tickets";
             HttpUtils.get("tickets", new RequestParams(), new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -146,7 +160,7 @@ public class Ticket {
         }
     }
 
-    public static void sendData(final SQLiteDatabase db, final TicketResponser responser){
+    public static void sendData(final SQLiteDatabase db, final TicketResponser responser) {
         ArrayList<Ticket> tickets = new ArrayList<>();
 
         String[] projection = {
@@ -168,7 +182,7 @@ public class Ticket {
                 sortOrder               // The sort order
         );
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             String performanceId = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket._ID));
             String performanceDate = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.DATE));
             String performanceTitle = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.PERFORMANCE));
@@ -180,4 +194,32 @@ public class Ticket {
 
         responser.onResponseReceived(tickets);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{
+                this.id,
+                this.date,
+                this.title,
+                String.valueOf(this.used),
+                this.created_date,
+                String.valueOf(this.isSelected)
+        });
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Ticket createFromParcel(Parcel in) {
+            return new Ticket(in);
+        }
+
+        public Ticket[] newArray(int size) {
+            return new Ticket[size];
+        }
+    };
+
 }
