@@ -78,6 +78,7 @@ public class CafeteriaActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, OrderQrActivity.class);
                     intent.putExtra("text", order);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

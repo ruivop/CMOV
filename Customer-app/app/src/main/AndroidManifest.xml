@@ -14,20 +14,28 @@
         android:supportsRtl="true"
         android:theme="@style/MaterialTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".app.MainActivity">
+        <activity android:name=".app.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.RegisterActivity" />
-        <activity android:name=".app.PerformancesActivity" />
-        <activity android:name=".app.TicketActivity" />
-        <activity android:name=".app.OwnedTicketsActivity" />
-        <activity android:name=".app.CafeteriaActivity" />
-        <activity android:name=".app.OrderQrActivity" />
-        <activity android:name=".app.LastyTransactionsActivity"></activity>
+        <activity android:name=".app.RegisterActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".app.PerformancesActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".app.TicketActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".app.OwnedTicketsActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".app.CafeteriaActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".app.OrderQrActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".app.LastyTransactionsActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

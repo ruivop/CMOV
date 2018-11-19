@@ -76,6 +76,7 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
                     Intent intent = new Intent(context, OrderQrActivity.class);
                     intent.putExtra("text", message);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
