@@ -11,12 +11,12 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/icon_of_the_option"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_theaters_black_24dp"
-        android:contentDescription="@string/icon_of_the_option" />
+        app:srcCompat="@drawable/ic_theaters_black_24dp" />
 
     <TextView
         android:id="@+id/nav_dawer_text"
