@@ -184,7 +184,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
             }
 
-            if((ids.size() + idsp.size()) < nVouchers){
+            if((ids.size() < nVouchers) && (idsp.size() < nPVouchers) ){
                 Toast.makeText(this.getLayoutInflater().getContext(),"Not Enough Vouchers Validated", Toast.LENGTH_SHORT).show();
                 return;
             }else{
