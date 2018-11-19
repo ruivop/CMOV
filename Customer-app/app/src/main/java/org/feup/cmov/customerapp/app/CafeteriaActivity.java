@@ -71,7 +71,7 @@ public class CafeteriaActivity extends AppCompatActivity {
                     return;
                 }
                 String order = getText();
-                if (getText().equals("Invalid")) {
+                if (order.equals("Invalid")) {
                     Toast.makeText(context, "You can't have more than 2 vouchers.", Toast.LENGTH_LONG).show();
 
                 } else {
@@ -178,6 +178,23 @@ public class CafeteriaActivity extends AppCompatActivity {
             totalcost += cost;
         }
 
+        TextView text = findViewById(R.id.order_cost);
+        text.setText(totalcost + "$");
+
+        oa.notifyDataSetChanged();
+    }
+
+
+    public void subOrder(OrderItem order) {
+        order.setNumber(order.getNumber()-1);
+        if(order.getNumber() == 0) {
+            orderItemList.remove(order);
+        }
+
+        double totalcost = 0;
+        for (int i = 0; i < orderItemList.size(); i++) {
+            totalcost += (orderItemList.get(i).getPrice() * orderItemList.get(i).getNumber());
+        }
         TextView text = findViewById(R.id.order_cost);
         text.setText(totalcost + "$");
 

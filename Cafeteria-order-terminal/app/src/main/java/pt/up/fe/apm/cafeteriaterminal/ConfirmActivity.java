@@ -100,7 +100,7 @@ public class ConfirmActivity extends AppCompatActivity {
                     String urlParameters = "product=" + plist + "&number=" + clist + "&price=" + String.valueOf(finalPrice) + "&userid=" + finalUserId ;
                     sendData(urlParameters, finalUserId,numberVouchers,numberPVouchers);
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    //startActivity(intent);
+                    startActivity(intent);
 
             }
     });
@@ -232,9 +232,10 @@ public class ConfirmActivity extends AppCompatActivity {
             String ResponseData = convertStreamToString(inputStream);
             System.out.println(ResponseData);
             inputStream.close();
+            Toast.makeText(this.getLayoutInflater().getContext(),"Success", Toast.LENGTH_SHORT).show();
         }
         catch(Exception e){
-
+            Toast.makeText(this.getLayoutInflater().getContext(),"Unsuccessful", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
 
         }

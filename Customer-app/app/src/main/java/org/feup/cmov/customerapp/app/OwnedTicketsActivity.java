@@ -44,7 +44,7 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
         validateBtn = findViewById(R.id.validate_tickets_btn);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Next Performances");
+        getSupportActionBar().setTitle("Present Tickets");
 
         if(savedInstanceState != null){
             tickets = savedInstanceState.getParcelableArrayList("list");

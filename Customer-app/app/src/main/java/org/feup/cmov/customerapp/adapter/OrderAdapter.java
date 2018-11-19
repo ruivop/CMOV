@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.feup.cmov.customerapp.R;
+import org.feup.cmov.customerapp.app.CafeteriaActivity;
 import org.feup.cmov.customerapp.model.OrderItem;
 import org.feup.cmov.customerapp.model.Ticket;
 
@@ -40,8 +41,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
-        OrderItem order = orderList.get(i);
+        final OrderItem order = orderList.get(i);
         myViewHolder.setData(order, i);
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CafeteriaActivity caf = (CafeteriaActivity) v.getContext();
+                caf.subOrder(order);
+            }
+        });
     }
 
 
