@@ -148,7 +148,7 @@ public class CafeteriaActivity extends AppCompatActivity {
         String testRegister = sp1.getString("Id", null);
         finaltext = testRegister + ";" + finaltext;
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSS");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateString = formatter.format(new java.util.Date());
 
         CafeteriaItem.addOrder(context, finaltext, totalcost, dateString);

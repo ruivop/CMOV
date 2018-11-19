@@ -18,7 +18,7 @@ public class Performance {
         this.title = title;
         this.image = image;
         this.description = description;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         this.price = price;
 
         try {
@@ -63,7 +63,7 @@ public class Performance {
 
 
     public String getDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
         return sdf.format(date);
     }
 
@@ -114,6 +114,8 @@ public class Performance {
                 R.drawable.concertimage10,
                 "this is the best concert ever",
                 "2018-12-28",2.00));
+
+        System.out.println("performance.getDate:" + performances.get(0).getDate());
         return performances;
     }
 }

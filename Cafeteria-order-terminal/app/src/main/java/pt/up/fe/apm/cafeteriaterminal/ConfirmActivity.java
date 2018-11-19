@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ConfirmActivity extends AppCompatActivity {
-
+    public static final String hrlAdress = "http://192.168.0.101:3000/";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +147,7 @@ public class ConfirmActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            URL urlVoucher = new URL("http://hello.localtunnel.me:3000/vouchers/user/" + userid);
+            URL urlVoucher = new URL(hrlAdress + "vouchers/user/" + userid);
             HttpURLConnection con = (HttpURLConnection) urlVoucher.openConnection();
             con.setRequestMethod("GET");
             con.setUseCaches(false);
@@ -190,7 +190,7 @@ public class ConfirmActivity extends AppCompatActivity {
             }else{
 
                 for(int i = 0; i < nVouchers; i++){
-                    URL url = new URL("http://hello.localtunnel.me:3000/vouchers/" + ids.get(i));
+                    URL url = new URL(hrlAdress + "vouchers/" + ids.get(i));
                     HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
                     httpCon.setDoOutput(true);
                     httpCon.setRequestProperty(
@@ -199,7 +199,7 @@ public class ConfirmActivity extends AppCompatActivity {
                     System.out.println(httpCon.getResponseCode());
                 }
                 for(int i = 0; i < nPVouchers; i++){
-                    URL url = new URL("http://hello.localtunnel.me:3000/vouchers/" + idsp.get(i));
+                    URL url = new URL(hrlAdress+ "vouchers/" + idsp.get(i));
                     HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
                     httpCon.setDoOutput(true);
                     httpCon.setRequestProperty(
@@ -213,7 +213,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
             byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
             int postDataLength = postData.length;
-            URL url = new URL("http://hello.localtunnel.me:3000/orders");
+            URL url = new URL(hrlAdress+ "orders");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setInstanceFollowRedirects(false);
