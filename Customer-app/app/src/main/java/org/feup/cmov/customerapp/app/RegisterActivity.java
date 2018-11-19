@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -81,7 +82,8 @@ public class RegisterActivity extends AppCompatActivity {
         register_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((RegisterActivity) context).updateFields();
+                if(!((RegisterActivity) context).updateFields())
+                    return;
                 Intent intent = new Intent(context, PerformancesActivity.class);
                 startActivity(intent);
                 finish();
@@ -99,26 +101,29 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Register");
     }
 
-    public void updateFields() {
+    public boolean updateFields() {
+        try {
         costumerName = editName.getText().toString();
         NIF = Long.parseLong(editNIF.getText().toString());
         type = CreditCardType.valueOf(getResources().getResourceEntryName(editType.getCheckedRadioButtonId()));
         creditCardNumber = Long.parseLong(editCreditCardNumber.getText().toString());
 
-        try {
+
             DateFormat format = new SimpleDateFormat("dd-mm-yy");
             creditCardValidity = format.parse(editcreditCardValidity.getText().toString());
-        } catch (ParseException e) {
+        } catch (Exception e) {
+            Toast.makeText(this, "Error Creating. Try modifying the fields", Toast.LENGTH_LONG).show();
             e.printStackTrace();
+            return false;
         }
 
         try {
             generateKeys();
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-
-
+        return true;
     }
 
     private void generateKeys() throws Exception {
