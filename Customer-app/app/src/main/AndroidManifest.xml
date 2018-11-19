@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.feup.cmov.customerapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,13 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.RegisterActivity"></activity>
-        <activity android:name=".app.PerformancesActivity"></activity>
-        <activity android:name=".app.TicketActivity"></activity>
-        <activity android:name=".app.OwnedTicketsActivity"></activity>
-        <activity android:name=".app.CafeteriaActivity"></activity>
-        <activity android:name=".app.OrderQrActivity"></activity>
+        <activity android:name=".app.RegisterActivity" />
+        <activity android:name=".app.PerformancesActivity" />
+        <activity android:name=".app.TicketActivity" />
+        <activity android:name=".app.OwnedTicketsActivity" />
+        <activity android:name=".app.CafeteriaActivity" />
+        <activity android:name=".app.OrderQrActivity" />
+        <activity android:name=".app.LastyTransactionsActivity"></activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 </manifest>

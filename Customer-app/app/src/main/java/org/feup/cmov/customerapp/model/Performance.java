@@ -90,7 +90,7 @@ public class Performance {
                 R.drawable.concertimage4,
                 "this is the best concert ever",
                 "01-08-2019",34.20));
-        performances.add(new Performance("Concert Concert Concert Concert Concert Concert end",
+        performances.add(new Performance("Visit to Oceanáio of Lisbon",
                 R.drawable.concertimage5,
                 "this is the best concert ever Concert Concert Concert Concert Concert Concert end Concert Concert Concert Concert Concert Concert end",
                 "01-08-2019",2.00));
@@ -98,7 +98,7 @@ public class Performance {
                 R.drawable.concertimage6,
                 "this is the best concert ever Concert Concert Concert Concert Concert Concert end Concert Concert Concert Concert Concert Concert end",
                 "01-08-2019",2.00));
-        performances.add(new Performance("Concert Concert Concert Concert Concert Concert end",
+        performances.add(new Performance("Queima 2019",
                 R.drawable.concertimage7,
                 "this is the best concert ever Concert Concert Concert Concert Concert Concert end Concert Concert Concert Concert Concert Concert end",
                 "17-08-2019",2.00));
@@ -106,7 +106,7 @@ public class Performance {
                 R.drawable.concertimage8,
                 "this is the best concert ever Concert Concert Concert Concert Concert Concert end Concert Concert Concert Concert Concert Concert end",
                 "14-08-2019",2.00));
-        performances.add(new Performance("Concert",
+        performances.add(new Performance("Arraial de Engenharia 2019",
                 R.drawable.concertimage9,
                 "this is the best concert ever",
                 "08-08-2019",2.00));

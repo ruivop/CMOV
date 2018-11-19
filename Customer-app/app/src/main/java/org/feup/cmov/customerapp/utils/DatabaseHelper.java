@@ -16,11 +16,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DataBaseContract.Ticket.SQL_DELETE_ENTRIES);
-        db.execSQL(DataBaseContract.Product.SQL_DELETE_ENTRIES);
         db.execSQL(DataBaseContract.Order.SQL_DELETE_ENTRIES);
 
         db.execSQL(DataBaseContract.Order.SQL_CREATE_ENTRIES);
-        db.execSQL(DataBaseContract.Product.SQL_CREATE_ENTRIES);
         db.execSQL(DataBaseContract.Ticket.SQL_CREATE_ENTRIES);
     }
 

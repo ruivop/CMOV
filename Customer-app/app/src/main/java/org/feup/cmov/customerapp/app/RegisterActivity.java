@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -20,6 +21,7 @@ import org.feup.cmov.customerapp.R;
 import org.feup.cmov.customerapp.model.RSA;
 import org.feup.cmov.customerapp.utils.HttpUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -39,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+
+import cz.msebera.android.httpclient.Header;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -120,13 +124,13 @@ public class RegisterActivity extends AppCompatActivity {
     private void generateKeys() throws Exception {
 
         Map<String, Object> keyMap = RSA.initKey();
-        String publicKey = RSA.getPublicKey(keyMap);
-        String privateKey = RSA.getPrivateKey(keyMap);
+        final String publicKey = RSA.getPublicKey(keyMap);
+        final String privateKey = RSA.getPrivateKey(keyMap);
 
-        String NIFString = String.valueOf(NIF);
-        String TypeString = type.toString();
-        String CCNString = String.valueOf(creditCardNumber);
-        String CCVString = creditCardValidity.toString();
+        final String NIFString = String.valueOf(NIF);
+        final String TypeString = type.toString();
+        final String CCNString = String.valueOf(creditCardNumber);
+        final String CCVString = creditCardValidity.toString();
 
         String byteString = costumerName + "//" + NIFString + "//" + TypeString + "//" + CCNString + "//" + CCVString;
 
@@ -135,78 +139,43 @@ public class RegisterActivity extends AppCompatActivity {
         try {
             byte[] encodedData = RSA.encryptByPublicKey(Data,publicKey);
 
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+            RequestParams requestParams = new RequestParams();
+            requestParams.put("publicKey", publicKey);
 
-            String urlParameters  = "publicKey=" + publicKey;
-            byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
-            int postDataLength = postData.length;
-            String request = "http://hello.localtunnel.me:3000/users";
-            URL url = new URL( request );
-            HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setInstanceFollowRedirects(false);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("charset", "utf-8");
-            conn.setRequestProperty("Content-Length", Integer.toString(postDataLength ));
-            conn.setUseCaches(false);
-            byte[] outputBytes = urlParameters.getBytes("UTF-8");
-            OutputStream os = conn.getOutputStream();
-            os.write(outputBytes);
-            os.flush();
-            os.close();
+            HttpUtils.postByUrl(HttpUtils.BASE_URL+ "users", requestParams, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    System.out.println("Body: " + new String(responseBody));
 
-            InputStream inputStream = new BufferedInputStream(conn.getInputStream());
-            String ResponseData = convertStreamToString(inputStream);
-            System.out.println(ResponseData);
-            inputStream.close();
+                    JSONObject jsonobj = null;
+                    String id = "";
+                    try {
+                        jsonobj = new JSONObject(new  String(responseBody));
+                        id = jsonobj.getString("_id");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-            JSONObject jsonobj = new JSONObject(ResponseData);
-            String id = jsonobj.getString("_id");
-            System.out.println(id);
+                    SharedPreferences sp = getSharedPreferences("Register", MODE_PRIVATE);
+                    SharedPreferences.Editor Ed = sp.edit();
+                    Ed.putString("Id",id);
+                    Ed.putString("PublicKey",publicKey);
+                    Ed.putString("PrivateKey",privateKey);
+                    Ed.putString("Name",costumerName);
+                    Ed.putString("NIF",NIFString);
+                    Ed.putString("CCType",TypeString);
+                    Ed.putString("CCNumber",CCNString);
+                    Ed.putString("CCValidity",CCVString);
+                    Ed.commit();
+                }
 
-
-            SharedPreferences sp = getSharedPreferences("Register", MODE_PRIVATE);
-            SharedPreferences.Editor Ed = sp.edit();
-            Ed.putString("Id",id);
-            Ed.putString("PublicKey",publicKey);
-            Ed.putString("PrivateKey",privateKey);
-            Ed.putString("Name",costumerName);
-            Ed.putString("NIF",NIFString);
-            Ed.putString("CCType",TypeString);
-            Ed.putString("CCNumber",CCNString);
-            Ed.putString("CCValidity",CCVString);
-            Ed.commit();
-
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    System.out.println("Error on purchasing the tickets " + statusCode + ": " + error.getMessage());
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
-    public String convertStreamToString(InputStream is) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append((line + "\n"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
-
-
 }

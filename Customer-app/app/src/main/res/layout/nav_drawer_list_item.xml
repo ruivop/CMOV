@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <ImageView
         android:id="@+id/nav_dawer_icon"
@@ -14,7 +15,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_theaters_black_24dp" />
+        app:srcCompat="@drawable/ic_theaters_black_24dp"
+        android:contentDescription="@string/icon_of_the_option" />
 
     <TextView
         android:id="@+id/nav_dawer_text"
@@ -23,7 +25,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:textSize="20dp"
+        android:text="@string/example"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nav_dawer_icon"
         app:layout_constraintTop_toTopOf="parent" />

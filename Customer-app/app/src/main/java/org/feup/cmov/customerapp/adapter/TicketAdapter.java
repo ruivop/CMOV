@@ -71,6 +71,7 @@ public class TicketAdapter  extends RecyclerView.Adapter<TicketAdapter.MyViewHol
             date = itemView.findViewById(R.id.ticketDate);
             isUsed = itemView.findViewById(R.id.is_used);
             switch_ticket = itemView.findViewById(R.id.switch_ticket);
+            switch_ticket.setClickable(false);
         }
 
         public void setData(Ticket ticket, int i){

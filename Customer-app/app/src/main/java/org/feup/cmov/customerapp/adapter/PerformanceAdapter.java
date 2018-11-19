@@ -38,17 +38,26 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = layoutInflater.inflate(R.layout.performance_item, viewGroup, false);
         MyViewHolder holder = new MyViewHolder(view);
-
-
-
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
 
-        Performance performance = performanceList.get(i);
+        final Performance performance = performanceList.get(i);
         myViewHolder.setData(performance, i);
+
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context con = v.getContext();
+                Intent intent = new Intent(con, TicketActivity.class);
+                intent.putExtra("price", performance.getPrice());
+                intent.putExtra("date", performance.getDate());
+                intent.putExtra("title", performance.getTitle());
+                con.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -64,7 +73,6 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         TextView date;
         TextView price;
         int position;
-        Performance current;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,21 +81,6 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             description = itemView.findViewById(R.id.performance_description_item);
             date = itemView.findViewById(R.id.performance_date_item);
             price = itemView.findViewById(R.id.performance_price_item);
-
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context con = v.getContext();
-                    Intent intent = new Intent(con, TicketActivity.class);
-                    intent.putExtra("price",current.getPrice());
-                    intent.putExtra("date",current.getDate());
-                    intent.putExtra("title",current.getTitle());
-                    con.startActivity(intent);
-
-
-                }
-            });
         }
 
         public void setData(Performance performance, int i) {
@@ -95,7 +88,6 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             description.setText(performance.getDescription());
             date.setText(performance.getDate());
             image.setImageResource(performance.getImage());
-            current = performance;
             price.setText(String.valueOf(performance.getPrice()) + "$");
         }
     }

@@ -19,12 +19,12 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
 
         SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
-        String testRegister = sp1.getString("Id",null);
-        if(testRegister != null){
+        String testRegister = sp1.getString("Id", null);
+        if (testRegister != null) {System.out.println("TEM REGISTO: " + testRegister);
             Intent intent = new Intent(context, PerformancesActivity.class);
             startActivity(intent);
+            finish();
         }
-
 
         Button but_qr = findViewById(R.id.register_btn);
 
@@ -37,5 +37,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-}
+    }
 }

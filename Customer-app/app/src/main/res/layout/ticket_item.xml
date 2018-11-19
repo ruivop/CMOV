@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Example"
+            android:text="@string/example"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +32,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Example"
+            android:text="@string/example"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/switch_ticket" />
@@ -44,7 +45,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="TextView"
+            android:text="@string/example"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ticketDate"
             app:layout_constraintHorizontal_bias="0.0"

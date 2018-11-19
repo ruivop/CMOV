@@ -19,4 +19,12 @@
     <string name="order">Order</string>
     <string name="m_order">Make Order</string>
     <string name="validate">Validate</string>
+    <string name="example">Example</string>
+    <string name="image_of_the_concert">Image Of the concert</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="icon_of_the_option">Icon Of the option</string>
+    <string name="image_of_the_product">Image of the product</string>
+    <string name="show_this_screen_to_the_professional">Show this screen to the professional</string>
+    <string name="image_of_the_qr_code">image of the qr code</string>
+    <string name="how_many_tickets">How many tickets?</string>
 </resources>

@@ -161,7 +161,13 @@ public class ConfirmationActivity extends AppCompatActivity {
         if(contentIndexSending == content.size()) {
             if(resultHasError == -1) {
                 resultHasError = 0;
-                infos.setText("All the " + contentIndexSending + " tickets were validated.");
+                String me = "All the " + contentIndexSending + " tickets were validated:\n";
+                for(TicketMessage message : content) {
+                    if(message.getErrorMessage().length() > 0) {
+                        me +=  "   ->" + message.getErrorMessage() + "\n";
+                    }
+                }
+                infos.setText(me);
             } else {
                 resultHasError = 1;
                 String error = "There are " + numberOfRejects + " rejected tickets, from "+ contentIndexSending + " total:\n";

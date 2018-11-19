@@ -30,15 +30,25 @@ public class Ticket {
     private String date;
     private String title;
     private boolean used;
+    private String created_date;
 
     private boolean isSelected;
 
-    public Ticket(String id, String date, String title, boolean used) {
+    public Ticket(String id, String date, String title, boolean used, String created_date) {
         this.id = id;
         this.date = date;
         this.title = title;
         this.used = used;
         isSelected= false;
+        this.created_date = created_date;
+    }
+
+    public String getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(String created_date) {
+        this.created_date = created_date;
     }
 
     public boolean isSelected() {
@@ -90,8 +100,7 @@ public class Ticket {
             return;
         }
 
-        //final String testRegister = sharedPreferences.getString("Id", null);
-        final String testRegister = "123123123"; //TODO: por o sharedPreferences no meu pc a funcioinar
+        final String testRegister = sharedPreferences.getString("Id", null);
         try {
             String request = "http://" + serverIp + ":3000/tickets";
             HttpUtils.get("tickets", new RequestParams(), new AsyncHttpResponseHandler() {
@@ -115,6 +124,7 @@ public class Ticket {
                                 values.put(DataBaseContract.Ticket.DATE, jsonobj.getString("edate"));
                                 values.put(DataBaseContract.Ticket.PERFORMANCE, jsonobj.getString("performance"));
                                 values.put(DataBaseContract.Ticket.VALIDATED, jsonobj.getString("validated"));
+                                values.put(DataBaseContract.Ticket.CREATED_DATE, jsonobj.getString("Created_date"));
 
                                 db.insert(DataBaseContract.Ticket.TABLE_NAME, null, values);
                             }
@@ -143,7 +153,8 @@ public class Ticket {
                 DataBaseContract.Ticket._ID,
                 DataBaseContract.Ticket.DATE,
                 DataBaseContract.Ticket.PERFORMANCE,
-                DataBaseContract.Ticket.VALIDATED
+                DataBaseContract.Ticket.VALIDATED,
+                DataBaseContract.Ticket.CREATED_DATE
         };
         String sortOrder = DataBaseContract.Ticket.DATE + " ASC";
 
@@ -161,8 +172,9 @@ public class Ticket {
             String performanceId = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket._ID));
             String performanceDate = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.DATE));
             String performanceTitle = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.PERFORMANCE));
+            String performanceCreatedDate = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.CREATED_DATE));
             Boolean performanceUsed = Boolean.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseContract.Ticket.VALIDATED)));
-            tickets.add(new Ticket(performanceId, performanceDate, performanceTitle, performanceUsed));
+            tickets.add(new Ticket(performanceId, performanceDate, performanceTitle, performanceUsed, performanceCreatedDate));
         }
         cursor.close();
 

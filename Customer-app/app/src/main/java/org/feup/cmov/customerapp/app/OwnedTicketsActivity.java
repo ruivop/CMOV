@@ -40,8 +40,7 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
             public void onClick(View v) {
                 List<Ticket> tickets = ticketAdapter.getTicketList();
                 int numSelected = 0;
-                //String id = getSharedPreferences("Register", MODE_PRIVATE).getString("Id", null);;
-                String id = "123123123";
+                String id = getSharedPreferences("Register", MODE_PRIVATE).getString("Id", null);
                 String message = id + "-";
                 for(Ticket ticket : tickets) {
                     if(ticket.isSelected()) {

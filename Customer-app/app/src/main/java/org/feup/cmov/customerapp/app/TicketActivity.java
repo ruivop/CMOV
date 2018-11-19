@@ -11,9 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.feup.cmov.customerapp.R;
+import org.feup.cmov.customerapp.utils.HttpUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,17 +31,20 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+import cz.msebera.android.httpclient.Header;
+
 public class TicketActivity extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar toolbar;
     int ticketval;
+    Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_ticket);
-
+        context = this;
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Next Performance");
@@ -46,26 +54,31 @@ public class TicketActivity extends AppCompatActivity {
         but_qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!HttpUtils.isNetworkAvailable(context)) {
+                    Toast.makeText(context, "Must have internet connection", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = getIntent();
-                double price =intent.getDoubleExtra("price",0.0);
+                double price = intent.getDoubleExtra("price", 0.0);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
                 alertDialogBuilder.setTitle("Confirm Purchase");
                 setBarTicketval();
                 final View v2 = v;
                 int tval = getTicketval();
 
-                alertDialogBuilder.setMessage("Are you sure you want to buy " + tval + " tickets for " + String.valueOf(price*tval) + "$")
+                alertDialogBuilder.setMessage("Are you sure you want to buy " + tval + " tickets for " + String.valueOf(price * tval) + "$")
                         .setCancelable(false)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        purchaseTicket(getTicketval());
-                        Context context = v2.getContext();
-                        Intent intent = new Intent(context, PerformancesActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                purchaseTicket(getTicketval());
+                                Context context = v2.getContext();
+                                Intent intent = new Intent(context, OwnedTicketsActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
                                 dialog.cancel();
                             }
@@ -75,15 +88,8 @@ public class TicketActivity extends AppCompatActivity {
 
                 // show it
                 alertDialog.show();
-
-
-
-
-
             }
         });
-
-
     }
 
     public int getTicketval() {
@@ -95,74 +101,42 @@ public class TicketActivity extends AppCompatActivity {
         ticketval = Integer.valueOf(String.valueOf(tval.getText()));
     }
 
-    private void purchaseTicket(int number){
+    private void purchaseTicket(int number) {
         Intent intent = getIntent();
         String performanceDate = intent.getStringExtra("date");
         String performanceTitle = intent.getStringExtra("title");
         SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
-        String idReg = sp1.getString("Id",null);
+        String idReg = sp1.getString("Id", null);
 
         try {
-
-            String urlParameters  = "edate=" + performanceDate + "&customer=" + idReg + "&performance=" + performanceTitle;
-            byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
-            int postDataLength = postData.length;
             String request = "";
-            if(number == 1){
-            request = "http://hello.localtunnel.me:3000/tickets";}
-            else{
-                request = "http://hello.localtunnel.me:3000/tickets/" + number;
+            if (number == 1) {
+                request ="tickets";
+            } else {
+                request = "tickets/" + number;
             }
-            URL url = new URL( request );
-            HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setInstanceFollowRedirects(false);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("charset", "utf-8");
-            conn.setRequestProperty("Content-Length", Integer.toString(postDataLength ));
-            conn.setUseCaches(false);
-            byte[] outputBytes = urlParameters.getBytes("UTF-8");
-            OutputStream os = conn.getOutputStream();
-            os.write(outputBytes);
-            os.flush();
-            os.close();
 
-            InputStream inputStream = new BufferedInputStream(conn.getInputStream());
-            String ResponseData = convertStreamToString(inputStream);
-            System.out.println(ResponseData);
-            inputStream.close();
+            RequestParams requestParams = new RequestParams();
+            requestParams.put("edate", performanceDate);
+            requestParams.put("edate", performanceDate);
+            requestParams.put("customer", idReg);
+            requestParams.put("performance", performanceTitle);
 
-        }catch (Exception e){
+            HttpUtils.postByUrl(HttpUtils.BASE_URL+ request, requestParams, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    System.out.println("Body: " + new String(responseBody));
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    System.out.println("Error on purchasing the tickets " + statusCode + ": " + error.getMessage());
+                }
+            });
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return;
-
-
-
-    }
-
-    public String convertStreamToString(InputStream is) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append((line + "\n"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
     }
 
 }
