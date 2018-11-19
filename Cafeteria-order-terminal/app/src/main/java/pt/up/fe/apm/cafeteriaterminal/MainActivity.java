@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Format: " + format + "\nMessage: " + contents);
 
 
+                Intent intent = new Intent(this, ConfirmActivity.class);
+                intent.putExtra("orderlist",contents);
+                startActivity(intent);
+
             }
         }
     }
