@@ -64,6 +64,9 @@ public class CafeteriaItem {
         cafItems.add(new CafeteriaItem("Coffee", R.drawable.coffeeimage, 0.5, 1000));
         cafItems.add(new CafeteriaItem("Soup", R.drawable.soupimage, 1.5, 1000));
         cafItems.add(new CafeteriaItem("Burger", R.drawable.burguerimage, 3.5, 1000));
+        cafItems.add(new CafeteriaItem("Soda", R.drawable.sodaimage, 1.0, 1000));
+        cafItems.add(new CafeteriaItem("Popcorn", R.drawable.popcornimage, 2.5, 1000));
+
 
         List<Vouchers> vouchers = getVouchers(context);
         ArrayList<CafeteriaItem> vouchersItems = new ArrayList<CafeteriaItem>();

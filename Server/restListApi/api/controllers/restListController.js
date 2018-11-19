@@ -7,6 +7,14 @@ var mongoose = require('mongoose'),
   order = mongoose.model('orders'),
   voucher = mongoose.model('vouchers');
 
+var rn = require('random-number');
+
+var options = {
+ integer: true
+}
+
+
+
 exports.list_all_users = function(req, res) {
   user.find({}, function(err, user) {
     if (err)
@@ -77,7 +85,11 @@ exports.create_a_ticket = function(req, res) {
       resp[0] = err;
     else
       resp[0] = [ticket];
-      var new_voucher = new voucher({product:'coffee',userid: req.body.customer});
+      if(rn(options) == 0){
+        var new_voucher = new voucher({product:'coffee',userid: req.body.customer});
+      }else{
+        var new_voucher = new voucher({product:'popcorn',userid: req.body.customer});
+      }
       new_voucher.save(function(err, voucher){
         if(err)
           resp[1] = err;
@@ -93,7 +105,11 @@ exports.create_more_tickets = function(req, res) {
   var array_voucher = [];
   for(var i = 0; i < req.params.ticketId ; i++){
     array[i] = req.body;
-    array_voucher[i] = {product:"coffee",userid: req.body.customer};
+    if(rn(options) == 0){
+    array_voucher[i] = {product:"coffee",userid: req.body.customer};}
+    else{
+      array_voucher[i] = {product:"popcorn",userid: req.body.customer};
+    }
   }
   var resp = [];
   ticket.create(array ,function(err, ticket) {
