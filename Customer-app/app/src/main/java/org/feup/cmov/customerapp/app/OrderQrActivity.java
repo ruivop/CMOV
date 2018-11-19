@@ -50,14 +50,14 @@ public class OrderQrActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        findViewById(R.id.button_to_transactions).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.button_to_transactions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, LastyTransactionsActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
         //adicionar um butao
     }
 }

@@ -16,6 +16,9 @@ var OrderSchema = new Schema({
    },
   price: {
   	type: Number
+  },
+  userid: {
+  	type: String
   }
 });
 

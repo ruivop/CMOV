@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -66,7 +67,9 @@ public class ConfirmActivity extends AppCompatActivity {
 
         final String plist = productlist;
         final String clist = costlist;
-
+        final Double finalPrice = totalPrice;
+        final String finalUserId = userId;
+        final int numberVouchers = nVouchers;
 
         //System.out.println(array_list);
         //System.out.println(array_list2);
@@ -80,15 +83,16 @@ public class ConfirmActivity extends AppCompatActivity {
         lv.setAdapter(arrayAdapter);
 
 
+
         Button but_qr = findViewById(R.id.yes_button);
         but_qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                    String urlParameters = "product=" + plist + "&number=" + clist + "&price=" + "";
-                    sendData(urlParameters);
+                    String urlParameters = "product=" + plist + "&number=" + clist + "&price=" + String.valueOf(finalPrice) + "&userid=" + finalUserId ;
+                    sendData(urlParameters, finalUserId,numberVouchers);
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    startActivity(intent);
+                    //startActivity(intent);
 
             }
     });
@@ -126,12 +130,61 @@ public class ConfirmActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private void sendData(String urlParameters){
+    private void sendData(String urlParameters, String userid, int nVouchers){
         try{
+
+
 
 
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
+
+            URL urlVoucher = new URL("http://hello.localtunnel.me:3000/vouchers/user/" + userid);
+            HttpURLConnection con = (HttpURLConnection) urlVoucher.openConnection();
+            con.setRequestMethod("GET");
+            con.setUseCaches(false);
+            int responseCode = con.getResponseCode();
+            System.out.println("Response Code : " + responseCode);
+
+            InputStream inputStream2 = new BufferedInputStream(con.getInputStream());
+            String ResponseData2 = convertStreamToString(inputStream2);
+            System.out.println(ResponseData2);
+            inputStream2.close();
+
+
+            String[] separated = ResponseData2.split(":");
+
+            System.out.println(separated);
+
+            int nAvailableVouchers = 0;
+            ArrayList<String> ids = new ArrayList<>();
+
+            for(int i = 0; i<separated.length; i++){
+                if(separated[i].contains("_id")){
+                    System.out.println(separated[i] + " AND " + separated[i+1]);
+                    String[] sp = separated[i+1].split(",");
+                    System.out.println(sp[0]);
+                    ids.add(sp[0].replaceAll("\"",""));
+                }
+            }
+
+            if(ids.size() < nVouchers){
+                Toast.makeText(this.getLayoutInflater().getContext(),"Not Enough Vouchers Validated", Toast.LENGTH_SHORT).show();
+                return;
+            }else{
+
+                for(int i = 0; i < nVouchers; i++){
+                    URL url = new URL("http://hello.localtunnel.me:3000/vouchers/" + ids.get(i));
+                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                    httpCon.setDoOutput(true);
+                    httpCon.setRequestProperty(
+                            "Content-Type", "application/x-www-form-urlencoded" );
+                    httpCon.setRequestMethod("DELETE");
+                    System.out.println(httpCon.getResponseCode());
+                }
+            }
+
+
             byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
             int postDataLength = postData.length;
             URL url = new URL("http://hello.localtunnel.me:3000/orders");
