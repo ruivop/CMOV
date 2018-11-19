@@ -73,44 +73,44 @@ public class Performance {
 
     public static ArrayList<Performance> getData(){
         ArrayList<Performance> performances = new ArrayList<>();
-        performances.add(new Performance("Concert of One Girl, One Hundred Melons",
+        performances.add(new Performance("Classics of Praga",
                 R.drawable.concertimage1,
                 "this is the best concert ever made in history and you sould not missit",
                 "2018-11-12",12.30));
-        performances.add(new Performance("Concert of the France Panic",
+        performances.add(new Performance("Jazz of Matosinhos",
                 R.drawable.concertimage2,
                 "this is the best concert ever made in history and you sould not missit no you dont",
                 "2018-11-13",15.30));
-        performances.add(new Performance("Concert Purely Red",
+        performances.add(new Performance("Sinfonia de residência",
                 R.drawable.concertimage3,
                 "This really isn't the best concert ever made in history and you shouldn't really go, it's terrible.",
                 "2018-11-14", 5.25));
 
-        performances.add(new Performance("Concert Hideous Sausage Cult",
+        performances.add(new Performance("Música para o Natal",
                 R.drawable.concertimage4,
                 "this is the best concert ever",
                 "2018-12-03",34.20));
         performances.add(new Performance("Visit to Oceanáio of Lisbon",
                 R.drawable.concertimage5,
-                "this is the best concert ever Concert Concert Concert Concert end",
+                "this is the best",
                 "2018-12-11",2.00));
-        performances.add(new Performance("Concert Full Elephants Dream",
+        performances.add(new Performance("Orquestra barroca",
                 R.drawable.concertimage6,
-                "this is the best concert ever  Concert Concert Concert Concert end",
+                "this is the best concert ever  Concert end",
                 "2018-12-18",2.00));
         performances.add(new Performance("Queima 2019",
                 R.drawable.concertimage7,
-                "this is the best concert ever Conce Concert Concert Concert Concert Concert end",
+                "this is the best concert ever Conce yes",
                 "2018-12-20",2.00));
-        performances.add(new Performance("Concert This Love is Hideous But It's Full",
+        performances.add(new Performance("Coro infantil",
                 R.drawable.concertimage8,
-                "this is the best concert ever Concert Concert Concert Conc Concert Concert Concert Concert end",
+                "this is the best concert ever Concert end",
                 "2018-12-24",2.00));
         performances.add(new Performance("Arraial de Engenharia 2019",
                 R.drawable.concertimage9,
                 "this is the best concert ever",
                 "2018-12-26",2.00));
-        performances.add(new Performance("Concert",
+        performances.add(new Performance("Concert of Jorge palma",
                 R.drawable.concertimage10,
                 "this is the best concert ever",
                 "2018-12-28",2.00));
