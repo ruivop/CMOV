@@ -39,17 +39,29 @@ public class ConfirmActivity extends AppCompatActivity {
         List<String> array_list3 = new ArrayList<String>();
         String productlist = "";
         String costlist = "";
-        for(int i = 0; i < separated.length; i++){
+        Double totalPrice = 0.0;
+        int nVouchers =0;
+        for(int i = 0; i < separated.length-1; i++){
             String[] separated2 = separated[i].split(":");
 
+            if(separated2[0].equals("Coffee Voucher")){
+                nVouchers = Integer.parseInt(separated2[1]);
+            }
 
             productlist = productlist + "-" + separated2[0];
-            costlist = costlist + "-" + separated2[0];
+            costlist = costlist + "-" + separated2[1];
 
-            array_list3.add(separated2[0] + " - " + separated2[1] + "$");
+            array_list3.add(separated2[0] + " - " + separated2[1]);
+
+
 
 
         }
+        String[] separatedFinal = separated[separated.length-1].split(":");
+        totalPrice = Double.parseDouble(separatedFinal[1]);
+
+        totalPrice = totalPrice - (totalPrice * (0.05 * nVouchers));
+        array_list3.add("Total Price - " + totalPrice + "$");
 
         final String plist = productlist;
         final String clist = costlist;
