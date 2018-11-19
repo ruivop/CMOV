@@ -47,5 +47,6 @@ public class OrderQrActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //adicionar um butao
     }
 }

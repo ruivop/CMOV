@@ -27,4 +27,7 @@
     <string name="show_this_screen_to_the_professional">Show this screen to the professional</string>
     <string name="image_of_the_qr_code">image of the qr code</string>
     <string name="how_many_tickets">How many tickets?</string>
+    <string name="choose_products">Choose Products</string>
+    <string name="ok">Ok</string>
+    <string name="total">Total:</string>
 </resources>

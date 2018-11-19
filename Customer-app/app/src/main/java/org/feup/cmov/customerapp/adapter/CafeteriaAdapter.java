@@ -31,14 +31,11 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.MyVi
         this.layoutInflater = LayoutInflater.from(context);
     }
 
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = layoutInflater.inflate(R.layout.cafeteria_item, viewGroup, false);
         CafeteriaAdapter.MyViewHolder holder = new CafeteriaAdapter.MyViewHolder(view);
-
-
 
         return holder;
     }
@@ -51,8 +48,18 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull CafeteriaAdapter.MyViewHolder myViewHolder, int i) {
 
-        CafeteriaItem cafeteria = cafeteriaList.get(i);
+        final CafeteriaItem cafeteria = cafeteriaList.get(i);
         myViewHolder.setData(cafeteria, i);
+
+
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CafeteriaActivity caf = (CafeteriaActivity) v.getContext();
+
+                caf.addOrder(cafeteria);
+            }
+        });
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
@@ -65,19 +72,6 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.MyVi
             title = itemView.findViewById(R.id.cafitemname);
             price = itemView.findViewById(R.id.cafitemprice);
             image = itemView.findViewById(R.id.cafeitemimage);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CafeteriaActivity caf = (CafeteriaActivity) v.getContext();
-
-
-                    caf.addOrder(title.getText().toString(), price.getText().toString());
-
-
-                }
-            });
-
         }
 
         public void setData(CafeteriaItem cafeteria, int i){

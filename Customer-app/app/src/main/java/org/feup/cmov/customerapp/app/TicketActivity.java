@@ -1,9 +1,11 @@
 package org.feup.cmov.customerapp.app;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +20,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.feup.cmov.customerapp.R;
+import org.feup.cmov.customerapp.model.DataBaseContract;
+import org.feup.cmov.customerapp.utils.DatabaseHelper;
 import org.feup.cmov.customerapp.utils.HttpUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -71,10 +78,6 @@ public class TicketActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 purchaseTicket(getTicketval());
-                                Context context = v2.getContext();
-                                Intent intent = new Intent(context, OwnedTicketsActivity.class);
-                                startActivity(intent);
-                                finish();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -126,11 +129,41 @@ public class TicketActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     System.out.println("Body: " + new String(responseBody));
+
+                    final DatabaseHelper mDbHelper = new DatabaseHelper(context);
+                    final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                    int i = -1;
+                    JSONArray jsonobj = null;
+                    try {
+                        jsonobj = new JSONArray(new  String(responseBody));
+                        JSONArray array = jsonobj.getJSONArray(1);
+                        for (i = 0; i < array.length(); i++) {
+                            JSONObject voucher = array.getJSONObject(i);
+
+                            ContentValues values = new ContentValues();
+                            values.put(DataBaseContract.Voucher._ID, voucher.getString("_id"));
+                            values.put(DataBaseContract.Voucher.PRODUCT, voucher.getString("product"));
+                            values.put(DataBaseContract.Voucher.CREATED_DATE, voucher.getString("Created_date"));
+                            db.insert(DataBaseContract.Voucher.TABLE_NAME, null, values);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(context, "Purchase Made. You gained " + i + " vouchers!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(context, OwnedTicketsActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     System.out.println("Error on purchasing the tickets " + statusCode + ": " + error.getMessage());
+
+                    Toast.makeText(context, "Error on purchasing the tickets", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(context, OwnedTicketsActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             });
 

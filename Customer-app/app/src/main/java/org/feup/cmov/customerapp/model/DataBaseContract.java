@@ -41,4 +41,19 @@ public final class DataBaseContract {
                 "DROP TABLE IF EXISTS " + Ticket.TABLE_NAME;
     }
 
+    public static class Voucher implements BaseColumns {
+        public static final String TABLE_NAME = "voucher";
+        public static final String CREATED_DATE = "created_date";
+        public static final String PRODUCT = "product";
+
+        public static final String SQL_CREATE_ENTRIES =
+                "CREATE TABLE " + Voucher.TABLE_NAME + " (" +
+                        Voucher._ID + " TEXT PRIMARY KEY," +
+                        Voucher.PRODUCT + " TEXT," +
+                        Voucher.CREATED_DATE + " TEXT);";
+
+        public static final String SQL_DELETE_ENTRIES =
+                "DROP TABLE IF EXISTS " + Voucher.TABLE_NAME;
+    }
+
 }

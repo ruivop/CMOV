@@ -3,6 +3,8 @@ package org.feup.cmov.customerapp.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +18,21 @@ import org.feup.cmov.customerapp.R;
 import org.feup.cmov.customerapp.TicketResponser;
 import org.feup.cmov.customerapp.adapter.PerformanceAdapter;
 import org.feup.cmov.customerapp.adapter.TicketAdapter;
+import org.feup.cmov.customerapp.model.LastTransactions;
 import org.feup.cmov.customerapp.model.Performance;
 import org.feup.cmov.customerapp.model.Ticket;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class OwnedTicketsActivity extends AppCompatActivity implements TicketResponser {
     private TicketAdapter ticketAdapter;
     Button validateBtn;
     Context context;
+    DrawerLayout drawerLayout;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +41,9 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
         setupRecyclerView();
         context = this;
         validateBtn = findViewById(R.id.validate_tickets_btn);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Next Performances");
 
         validateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +71,22 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
                 }
             }
         });
+        setupDrawer();
+    }
+
+    private void setupDrawer() {
+        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.nav_drawer_frag);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerFragment.setupDrawer(R.id.nav_drawer_frag, drawerLayout, toolbar);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 
@@ -72,6 +98,14 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
     @Override
     public void onResponseReceived(ArrayList<Ticket> tickets) {
 
+        Collections.sort(tickets, new Comparator<Ticket>() {
+            @Override
+            public int compare(Ticket lhs, Ticket rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                return rhs.getDate().compareTo(lhs.getDate());
+            }
+        });
+
         RecyclerView recyclerView = findViewById(R.id.owned_tickets);
         ticketAdapter = new TicketAdapter(this, tickets);
         recyclerView.setAdapter(ticketAdapter);
@@ -82,4 +116,5 @@ public class OwnedTicketsActivity extends AppCompatActivity implements TicketRes
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
+
 }

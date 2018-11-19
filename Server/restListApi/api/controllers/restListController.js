@@ -70,17 +70,21 @@ exports.list_all_tickets = function(req, res) {
 
 
 exports.create_a_ticket = function(req, res) {
+  var resp = [];
   var new_ticket = new ticket(req.body);
   new_ticket.save(function(err, ticket) {
     if (err)
-      res.send(err);
+      resp[0] = err;
     else
-      res.json(ticket);
-  });
-  var new_voucher = new voucher({product:'coffee'});
-  new_voucher.save(function(err){
-    if(err)
-      res.send(err);
+      resp[0] = [ticket];
+      var new_voucher = new voucher({product:'coffee'});
+      new_voucher.save(function(err, voucher){
+        if(err)
+          resp[1] = err;
+        else
+          resp[1] = [voucher];
+        res.json(resp);
+      });
   });
 };
 
@@ -97,14 +101,16 @@ exports.create_more_tickets = function(req, res) {
       resp[0] = err;
     else
       resp[0] = ticket;
+      
+    voucher.create(array_voucher ,function(err, voucher) {
+      if (err)
+        resp[1] = err;
+      else
+        resp[1] = voucher;
+        
+      res.json(resp);
+    });
   });
-  voucher.create(array_voucher ,function(err) {
-    if (err)
-      resp[1] = err;
-    else
-      resp[1] = ticket;
-  });
-  return resp;
 };
 
 

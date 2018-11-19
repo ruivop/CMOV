@@ -51,11 +51,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, myViewHolder.title.getText().toString(), Toast.LENGTH_SHORT).show();
-                if(activity != null){
-                Context con = v.getContext();
-                Intent intent = new Intent(con, activity);
-                con.startActivity(intent);}
+                if (activity != null) {
+                    Context con = v.getContext();
+                    Intent intent = new Intent(con, activity);
+                    con.startActivity(intent);
+                }
 
             }
         });
@@ -66,8 +66,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         return drawerList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
-
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
 
         TextView title;
@@ -86,7 +85,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
             SharedPreferences sp1 = context.getSharedPreferences("Register", MODE_PRIVATE);
 
-            String namePreference = sp1.getString("Name",null);
+            String namePreference = sp1.getString("Name", null);
             //name.setText("Repas");
             title.setText(drawer.getTitle());
             image.setImageResource(drawer.getImageId());
