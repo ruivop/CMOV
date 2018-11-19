@@ -64,12 +64,17 @@ public class CafeteriaItem {
         cafItems.add(new CafeteriaItem("Coffee", R.drawable.coffeeimage, 0.5, 1000));
         cafItems.add(new CafeteriaItem("Soup", R.drawable.soupimage, 1.5, 1000));
         cafItems.add(new CafeteriaItem("Burger", R.drawable.burguerimage, 3.5, 1000));
+        cafItems.add(new CafeteriaItem("Soda", R.drawable.sodaimage, 1.0, 1000));
+        cafItems.add(new CafeteriaItem("Popcorn", R.drawable.popcornimage, 2.5, 1000));
+
 
         List<Vouchers> vouchers = getVouchers(context);
 
         int numCoffees = 0;
         int numSoup = 0;
         int numBurger = 0;
+        int numSoda = 0;
+        int numPopcorn = 0;
         for(Vouchers v: vouchers){
             if(v.prduct.compareTo("coffee") == 0)
                 numCoffees++;
@@ -77,6 +82,10 @@ public class CafeteriaItem {
                 numSoup++;
             else if(v.prduct.compareTo("burger") == 0)
                 numBurger++;
+            else if(v.prduct.compareTo("soda") == 0)
+                numSoda++;
+            else if(v.prduct.compareTo("popcorn") == 0)
+                numPopcorn++;
         }
 
         if(numCoffees > 0) {
@@ -85,6 +94,10 @@ public class CafeteriaItem {
             cafItems.add(new CafeteriaItem("Soup  Voucher (" + numSoup + " available)", R.drawable.soupimage, 0, numSoup));
         } else if(numBurger > 0) {
             cafItems.add(new CafeteriaItem("Burger  Voucher (" + numBurger + " available)", R.drawable.burguerimage, 0, numBurger));
+        } else if(numSoda > 0) {
+            cafItems.add(new CafeteriaItem("Soda  Voucher (" + numSoda + " available)", R.drawable.sodaimage, 0, numSoda));
+        } else if(numPopcorn > 0) {
+            cafItems.add(new CafeteriaItem("Popcorn  Voucher (" + numPopcorn + " available)", R.drawable.popcornimage, 0, numPopcorn));
         }
 
         return cafItems;
