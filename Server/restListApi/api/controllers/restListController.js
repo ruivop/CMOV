@@ -4,7 +4,8 @@
 var mongoose = require('mongoose'),
   user = mongoose.model('users'),
   ticket = mongoose.model('tickets'),
-  order = mongoose.model('orders');
+  order = mongoose.model('orders'),
+  voucher = mongoose.model('vouchers');
 
 exports.list_all_users = function(req, res) {
   user.find({}, function(err, user) {
@@ -75,17 +76,31 @@ exports.create_a_ticket = function(req, res) {
       res.send(err);
     res.json(ticket);
   });
+  var new_voucher = new voucher({product:'coffee'});
+  new_voucher.save(function(err){
+    if(err)
+      res.send(err);
+  });
 };
 
 exports.create_more_tickets = function(req, res) {
+  var array = [];
+  var array_voucher = [];
   for(var i = 0; i < req.params.ticketId ; i++){
-  var new_ticket = new ticket(req.body);
-  new_ticket.save(function(err, ticket) {
+    array[i] = req.body;
+    array_voucher[i] = {product:"coffee"};
+  }
+  ticket.create(array ,function(err, ticket) {
     if (err)
       res.send(err);
-    res.json(ticket);
+    res.send(ticket);
   });
-}};
+  voucher.create(array_voucher ,function(err) {
+    if (err)
+      res.send(err);
+  });
+
+};
 
 
 exports.read_a_ticket = function(req, res) {
@@ -185,14 +200,63 @@ exports.update_a_order = function(req, res) {
 exports.delete_a_order = function(req, res) {
   order.remove({
     _id: req.params.orderId
-  }, function(err, user) {
+  }, function(err, order) {
     if (err)
       res.send(err);
     res.json({ message: 'order successfully deleted' });
   });
 };
 
+exports.list_all_vouchers = function(req, res) {
+  voucher.find({}, function(err, voucher) {
+    if (err)
+      res.send(err);
+    res.json(voucher);
+  });
+};
 
+
+
+
+exports.create_a_voucher = function(req, res) {
+  var new_voucher = new voucher(req.body);
+  new_voucher.save(function(err, voucher) {
+    if (err)
+      res.send(err);
+    res.json(voucher);
+  });
+};
+
+
+exports.read_a_voucher = function(req, res) {
+  voucher.findById(req.params.voucherId, function(err, voucher) {
+    if (err)
+      res.send(err);
+    res.json(voucher);
+  });
+};
+
+
+exports.update_a_voucher = function(req, res) {
+  voucher.findOneAndUpdate({_id: req.params.voucherId}, req.body, {new: true}, function(err, voucher) {
+    if (err)
+      res.send(err);
+    res.json(voucher);
+  });
+};
+
+
+exports.delete_a_voucher = function(req, res) {
+
+
+  voucher.remove({
+    _id: req.params.voucherId
+  }, function(err, voucher) {
+    if (err)
+      res.send(err);
+    res.json({ message: 'voucher successfully deleted' });
+  });
+};
 
 
 

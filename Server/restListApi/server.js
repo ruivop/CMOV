@@ -4,7 +4,8 @@ var express = require('express'),
   mongoose = require('mongoose'),
   user = require('./api/models/restListModel'),
   ticket = require('./api/models/ticketListModel'),
-  order = require('./api/models/orderListModel')
+  order = require('./api/models/orderListModel'),
+  voucher = require('./api/models/voucherListModel'),
   bodyParser = require('body-parser');
   
 // mongoose instance connection url connection

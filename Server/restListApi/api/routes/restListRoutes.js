@@ -34,4 +34,13 @@ module.exports = function(app) {
     .get(restList.read_a_order)
     .put(restList.update_a_order)
     .delete(restList.delete_a_order);
+
+  app.route('/vouchers')
+    .get(restList.list_all_vouchers)
+    .post(restList.create_a_voucher);
+
+  app.route('/vouchers/:voucherId')
+    .get(restList.read_a_voucher)
+    .put(restList.update_a_voucher)
+    .delete(restList.delete_a_voucher);
 };
