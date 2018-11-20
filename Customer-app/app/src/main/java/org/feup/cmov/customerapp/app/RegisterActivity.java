@@ -64,10 +64,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editCreditCardNumber;
     private EditText editcreditCardValidity;
 
+    Context context;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
-        final Context context = this;
+        context = this;
 
         SharedPreferences sp1 = this.getSharedPreferences("Register", MODE_PRIVATE);
         String testRegister = sp1.getString("PublicKey",null);
@@ -84,9 +86,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!((RegisterActivity) context).updateFields())
                     return;
-                Intent intent = new Intent(context, PerformancesActivity.class);
-                startActivity(intent);
-                finish();
+                if(!HttpUtils.isNetworkAvailable(context)) {
+                    Toast.makeText(context, "Must have internet connection to register", Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
         });
 
@@ -172,10 +175,16 @@ public class RegisterActivity extends AppCompatActivity {
                     Ed.putString("CCNumber",CCNString);
                     Ed.putString("CCValidity",CCVString);
                     Ed.commit();
+
+                    Toast.makeText(context, "Account created", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, PerformancesActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Toast.makeText(context, "Could not created account", Toast.LENGTH_SHORT).show();
                     System.out.println("Error on purchasing the tickets " + statusCode + ": " + error.getMessage());
                 }
             });

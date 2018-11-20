@@ -55,7 +55,7 @@ public class Drawer {
 
         drawers.add(new Drawer("Next Performances", R.drawable.ic_theaters_black_24dp, PerformancesActivity.class));
         drawers.add(new Drawer("Present Tickets", R.drawable.ic_payment_black_24dp, OwnedTicketsActivity.class));
-        drawers.add(new Drawer("CafeteriaItem", R.drawable.ic_store_black_24dp, CafeteriaActivity.class));
+        drawers.add(new Drawer("Cafeteria", R.drawable.ic_store_black_24dp, CafeteriaActivity.class));
         drawers.add(new Drawer("Last Transactions", R.drawable.ic_history_black_24dp, LastyTransactionsActivity.class));
 
         return drawers;

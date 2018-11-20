@@ -14,7 +14,6 @@ var options = {
 }
 
 
-
 exports.list_all_users = function(req, res) {
   user.find({}, function(err, user) {
     if (err)

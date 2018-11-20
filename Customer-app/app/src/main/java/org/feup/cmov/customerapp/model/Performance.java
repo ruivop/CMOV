@@ -83,7 +83,7 @@ public class Performance {
                 "2018-11-13",15.30));
         performances.add(new Performance("Sinfonia de residência",
                 R.drawable.concertimage3,
-                "This really isn't the best concert ever made in history and you shouldn't really go, it's terrible.",
+                "This really isn't the best concert ever made. go, it's terrible.",
                 "2018-11-14", 5.25));
 
         performances.add(new Performance("Música para o Natal",
