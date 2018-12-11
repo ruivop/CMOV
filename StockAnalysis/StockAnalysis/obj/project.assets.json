@@ -594,11 +594,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.csproj",
+      "projectUniqueName": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysis\\StockAnalysis\\StockAnalysis.csproj",
       "projectName": "StockAnalysis",
-      "projectPath": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.csproj",
+      "projectPath": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysis\\StockAnalysis\\StockAnalysis.csproj",
       "packagesPath": "C:\\Users\\Nuno Freitas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysis\\StockAnalysis\\obj\\",
+      "outputPath": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysis\\StockAnalysis\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
