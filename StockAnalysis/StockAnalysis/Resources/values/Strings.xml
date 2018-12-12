@@ -1,4 +1,5 @@
-<resources>
-    <string name="app_name">StockAnalysis</string>
-    <string name="action_settings">Settings</string>
-</resources>
+<?xml version = "1.0" encoding = "utf-8"?> 
+<resources> 
+   <string name = "HelloXamarin">Hello World, I am Xamarin!</string> 
+   <string name = "ApplicationName">helloWorld</string> 
+</resources> 

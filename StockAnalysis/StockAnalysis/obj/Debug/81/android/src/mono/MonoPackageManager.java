@@ -107,7 +107,11 @@ class MonoPackageManager_Resources {
 	public static final String[] Assemblies = new String[]{
 		/* We need to ensure that "StockAnalysis.dll" comes first in this list. */
 		"StockAnalysis.dll",
+		"FormsViewGroup.dll",
 		"Newtonsoft.Json.dll",
+		"SkiaSharp.dll",
+		"SkiaSharp.Views.Android.dll",
+		"SkiaSharp.Views.Forms.dll",
 		"Xamarin.Android.Arch.Core.Common.dll",
 		"Xamarin.Android.Arch.Lifecycle.Common.dll",
 		"Xamarin.Android.Arch.Lifecycle.Runtime.dll",
@@ -120,9 +124,18 @@ class MonoPackageManager_Resources {
 		"Xamarin.Android.Support.Fragment.dll",
 		"Xamarin.Android.Support.Media.Compat.dll",
 		"Xamarin.Android.Support.Transition.dll",
+		"Xamarin.Android.Support.v13.dll",
+		"Xamarin.Android.Support.v4.dll",
 		"Xamarin.Android.Support.v7.AppCompat.dll",
+		"Xamarin.Android.Support.v7.CardView.dll",
+		"Xamarin.Android.Support.v7.MediaRouter.dll",
+		"Xamarin.Android.Support.v7.Palette.dll",
 		"Xamarin.Android.Support.v7.RecyclerView.dll",
 		"Xamarin.Android.Support.Vector.Drawable.dll",
+		"Xamarin.Forms.Core.dll",
+		"Xamarin.Forms.Platform.Android.dll",
+		"Xamarin.Forms.Platform.dll",
+		"Xamarin.Forms.Xaml.dll",
 	};
 	public static final String[] Dependencies = new String[]{
 	};

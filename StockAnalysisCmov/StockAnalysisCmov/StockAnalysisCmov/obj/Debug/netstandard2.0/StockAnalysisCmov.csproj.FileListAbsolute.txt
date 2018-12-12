@@ -1,0 +1,12 @@
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\bin\Debug\netstandard2.0\StockAnalysisCmov.deps.json
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\bin\Debug\netstandard2.0\StockAnalysisCmov.dll
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\StockAnalysisCmov.csprojAssemblyReference.cache
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\StockAnalysisCmov.csproj.CoreCompileInputs.cache
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\StockAnalysisCmov.AssemblyInfoInputs.cache
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\StockAnalysisCmov.AssemblyInfo.cs
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\bin\Debug\netstandard2.0\StockAnalysisCmov.pdb
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\StockAnalysisCmov.dll
+C:\Users\Nuno Freitas\source\repos\StockAnalysisCmov\StockAnalysisCmov\StockAnalysisCmov\obj\Debug\netstandard2.0\StockAnalysisCmov.pdb
