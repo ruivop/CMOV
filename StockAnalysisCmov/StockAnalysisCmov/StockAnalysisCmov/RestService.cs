@@ -20,6 +20,7 @@ namespace StockAnalysisCmov
         public Company Company { get; private set; }
         public List<Quote> Quotes { get; private set; }
         String QuoteRestUrl = "https://api.iextrading.com/1.0/stock/aapl/chart";
+        String QuoteRestUrl2 = "https://api.iextrading.com/1.0/stock/ibm/chart";
         String CompanyRestUrl = "https://api.iextrading.com/1.0/stock/aapl/company";
 
         public RestService()
@@ -28,11 +29,18 @@ namespace StockAnalysisCmov
             client.MaxResponseContentBufferSize = 256000;
         }
 
-        public async Task<List<Quote>> QuoteRefreshDataAsync()
+        public async Task<List<Quote>> QuoteRefreshDataAsync(bool T)
         {
             Items = new List<String>();
-
-            var uri = new Uri(string.Format(QuoteRestUrl, string.Empty));
+            Uri uri;
+            if (T)
+            {
+                 uri = new Uri(string.Format(QuoteRestUrl, string.Empty));
+            }
+            else
+            {
+                uri = new Uri(string.Format(QuoteRestUrl2, string.Empty));
+            }
             try
             {
                 var response = await client.GetAsync(uri).ConfigureAwait(false);
