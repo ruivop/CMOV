@@ -1086,11 +1086,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.Android\\StockAnalysisCmov.Android.csproj",
+      "projectUniqueName": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.Android\\StockAnalysisCmov.Android.csproj",
       "projectName": "StockAnalysisCmov.Android",
-      "projectPath": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.Android\\StockAnalysisCmov.Android.csproj",
+      "projectPath": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.Android\\StockAnalysisCmov.Android.csproj",
       "packagesPath": "C:\\Users\\Nuno Freitas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.Android\\obj\\",
+      "outputPath": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
@@ -1107,8 +1107,8 @@
       "frameworks": {
         "monoandroid81": {
           "projectReferences": {
-            "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj": {
-              "projectPath": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj"
+            "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj": {
+              "projectPath": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj"
             }
           }
         }

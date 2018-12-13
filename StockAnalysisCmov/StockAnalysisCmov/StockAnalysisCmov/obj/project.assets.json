@@ -3350,11 +3350,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj",
+      "projectUniqueName": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj",
       "projectName": "StockAnalysisCmov",
-      "projectPath": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj",
+      "projectPath": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov.csproj",
       "packagesPath": "C:\\Users\\Nuno Freitas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nuno Freitas\\source\\repos\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\obj\\",
+      "outputPath": "C:\\Users\\Nuno Freitas\\Desktop\\CMOV\\StockAnalysisCmov\\StockAnalysisCmov\\StockAnalysisCmov\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

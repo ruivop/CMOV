@@ -1,6 +1,10 @@
+FormsViewGroup
+Newtonsoft.Json
+SkiaSharp
+SkiaSharp.Views.Android
+SkiaSharp.Views.Forms
 StockAnalysisCmov
 System.Runtime
-FormsViewGroup
 Xamarin.Android.Arch.Core.Common
 Xamarin.Android.Arch.Lifecycle.Common
 Xamarin.Android.Arch.Lifecycle.Runtime
@@ -24,8 +28,4 @@ Xamarin.Forms.Core
 Xamarin.Forms.Platform.Android
 Xamarin.Forms.Platform
 Xamarin.Forms.Xaml
-SkiaSharp
-SkiaSharp.Views.Android
-SkiaSharp.Views.Forms
-Newtonsoft.Json
 netstandard
