@@ -58,7 +58,7 @@ namespace StockAnalysisCmov
 
             SKPaint paint = new SKPaint
             {
-                Style = SKPaintStyle.Stroke,
+                Style = SKPaintStyle.Fill,
                 Color = Color.Red.ToSKColor(),
                 StrokeWidth = 0.7f
             };
@@ -66,8 +66,9 @@ namespace StockAnalysisCmov
 
             if(MainQuotes.Count != 0)
             {
-                
-                
+
+                SKPath path = new SKPath();
+
 
                 float max = (float)MainQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
                 float min = (float)MainQuotes.OrderByDescending(l => l.Close).ToList()[MainQuotes.Count - 1].Close;
@@ -78,22 +79,25 @@ namespace StockAnalysisCmov
 
                 canvas.DrawLine(0, canvas.LocalClipBounds.Bottom, info.Width, canvas.LocalClipBounds.Bottom, box);
                 canvas.DrawLine(0, 0, 0, canvas.LocalClipBounds.Bottom, box);
-
+                
+                path.MoveTo(0, canvas.LocalClipBounds.Bottom);
+                path.LineTo(0, (float)MainQuotes[0].Close);
+                int last = 0;
                 for (var i = 0; i < MainQuotes.Count - 1; i++)
                 {
+                    path.LineTo(info.Width / MainQuotes.Count * (i+1), (float)MainQuotes[i+1].Close);
                     canvas.DrawLine(info.Width / MainQuotes.Count * i, (float)MainQuotes[i].Close, info.Width / MainQuotes.Count * (i + 1), (float)MainQuotes[i + 1].Close, paint);
+                    last = i+1;
                 }
+                path.LineTo(info.Width / MainQuotes.Count * last, canvas.LocalClipBounds.Bottom);
+                path.Close();
+                paint.Color = SKColors.Red.WithAlpha((byte)(0xFF * 0.2));
+                canvas.DrawPath(path, paint);
 
 
             }
 
-            //canvas.DrawCircle(info.Width / 2, info.Height / 2, 100, paint);
-            /*var path = new SKPath();
-            path.MoveTo(500, 500);
-            path.LineTo(750, 1000);
-            path.LineTo(1000, 500);
-            //path.Close();
-            canvas.DrawPath(path, paint);*/
+            
         }
     }
 
