@@ -19,28 +19,73 @@ namespace StockAnalysisCmov
         List<Company> MainCompanies { get; set; }
         List<Quote> MainQuotes { get; set; }
         List<Quote> SecondaryQuotes { get; set; }
+        RestService rest = new RestService();
 
+        Dictionary<string, string> companies = new Dictionary<string, string>
+        {
+            { "Apple", "AAPL"}, { "IBM", "IBM"},
+            { "Hewlett Packard", "HPE"}, { "Microsoft", "MSFT"},
+            { "Oracle", "ORCL"}, { "Spotify", "SPOT"},
+            { "Facebook", "FB"}, { "Twitter", "TWTR"},
+            { "Intel", "INTC"}, { "AMD", "AMD"}
+
+        };
 
         public MainPage()
         {
             InitializeComponent();
-            RestService rest = new RestService();
-            MainQuotes = rest.QuoteRefreshDataAsync(true).Result;
-            SecondaryQuotes = rest.QuoteRefreshDataAsync(false).Result;
+            
+            MainQuotes = rest.QuoteRefreshDataAsync("aapl").Result;
+            SecondaryQuotes = rest.QuoteRefreshDataAsync("ibm").Result;
             System.Diagnostics.Debug.WriteLine(MainQuotes);
             
 
             Title = "Graph";
-            
-            
+
+            /*Picker picker = new Picker
+            {
+                Title = "Company",
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            foreach (string company in companies.Keys)
+            {
+                picker.Items.Add(company);
+            }*/
+
             //SKCanvasView canvasView = new SKCanvasView();
             //canvasView.PaintSurface += OnCanvasViewPaintSurface;
             //Content = canvasView;
 
-            
-            //Companies.Add(rest.CompanyRefreshDataAsync().Result);
-           
 
+            //Companies.Add(rest.CompanyRefreshDataAsync().Result);
+
+
+        }
+
+
+        void OnPickerSelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                MainQuotes = rest.QuoteRefreshDataAsync(companies[(picker.Items[selectedIndex])]).Result;
+                canvasView.InvalidateSurface();
+            }
+        }
+
+        void OnPickerSelectedIndexChanged2(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                SecondaryQuotes = rest.QuoteRefreshDataAsync(companies[(picker.Items[selectedIndex])]).Result;
+                canvasView.InvalidateSurface();
+            }
         }
 
         void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
@@ -99,14 +144,15 @@ namespace StockAnalysisCmov
             //canvas.DrawCircle(info.Width / 2, info.Height / 2, 100, paint);
             float max = 0;
             float min = 0;
-            if(MainQuotes.Count != 0)
+            float mmax = (float)MainQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
+            float mmin = (float)MainQuotes.OrderByDescending(l => l.Close).ToList()[MainQuotes.Count - 1].Close;
+            float smax = (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
+            float smin = (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[SecondaryQuotes.Count - 1].Close;
+            if (MainQuotes.Count != 0)
             {
                 if(SecondaryQuotes.Count != 0)
                 {
-                    float mmax = (float)MainQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
-                    float mmin = (float)MainQuotes.OrderByDescending(l => l.Close).ToList()[MainQuotes.Count - 1].Close;
-                    float smax = (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
-                    float smin = (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[SecondaryQuotes.Count - 1].Close;
+                    
 
                     if (mmax > smax)
                         max = mmax;
@@ -146,8 +192,8 @@ namespace StockAnalysisCmov
                 SKPath path = new SKPath();
                 SKPath npath = new SKPath();
 
-                double mmax = MainQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
-                double mmin = MainQuotes.OrderByDescending(l => l.Close).ToList()[MainQuotes.Count - 1].Close;
+                double dmmax = MainQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
+                double dmmin = MainQuotes.OrderByDescending(l => l.Close).ToList()[MainQuotes.Count - 1].Close;
 
 
 
@@ -166,15 +212,18 @@ namespace StockAnalysisCmov
                     last = i+1;
                     double current = MainQuotes[i+1].Close;
 
-                    if (current.Equals(mmax) || current.Equals(mmin))
+                    if (current.Equals(dmmax) || current.Equals(dmmin))
                     {
                         canvas.DrawText(Convert.ToString(MainQuotes[i+1].Close), info.Width / MainQuotes.Count * (i+1), canvas.LocalClipBounds.Bottom - (float)MainQuotes[i + 1].Close - 35, textPaint);
                     }
 
                         if (i % 3 == 0)
                     {
-                        npath.MoveTo(info.Width / MainQuotes.Count * (i + 1), canvas.LocalClipBounds.Bottom - (float)MainQuotes[i + 1].Close - 35);
-                        npath.LineTo(info.Width / MainQuotes.Count * (i+1), canvas.LocalClipBounds.Bottom - 35);
+                        if (mmax >= smax)
+                        {
+                            npath.MoveTo(info.Width / MainQuotes.Count * (i + 1), canvas.LocalClipBounds.Bottom - (float)MainQuotes[i + 1].Close - 35);
+                            npath.LineTo(info.Width / MainQuotes.Count * (i + 1), canvas.LocalClipBounds.Bottom - 35);
+                        }
                         canvas.Save();
                         canvas.Translate((info.Width / MainQuotes.Count * (i+1))- 5, canvas.LocalClipBounds.Bottom - 25);
                         canvas.RotateDegrees(22);
@@ -184,7 +233,7 @@ namespace StockAnalysisCmov
                     }
                 }
                 double first = MainQuotes[0].Close;
-                if (first.Equals(mmax) || first.Equals(mmin))
+                if (first.Equals(dmmax) || first.Equals(dmmin))
                 {
                     canvas.DrawText(Convert.ToString(MainQuotes[0].Close), info.Width / MainQuotes.Count * (0), canvas.LocalClipBounds.Bottom - (float)MainQuotes[0].Close - 35, textPaint);
                 }
@@ -200,9 +249,10 @@ namespace StockAnalysisCmov
             if (SecondaryQuotes.Count != 0)
             {
                 SKPath path = new SKPath();
+                SKPath npath = new SKPath();
 
-                double smax = SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
-                double smin = SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[SecondaryQuotes.Count - 1].Close;
+                double dsmax = SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[0].Close;
+                double dsmin = SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[SecondaryQuotes.Count - 1].Close;
 
                 path.MoveTo(0, canvas.LocalClipBounds.Bottom - 35);
                 path.LineTo(0, canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes[0].Close - 35);
@@ -217,14 +267,23 @@ namespace StockAnalysisCmov
 
                     double current = SecondaryQuotes[i + 1].Close;
 
-                    if (current.Equals(smax) || current.Equals(smin))
+                    if (i % 3 == 0)
+                    {
+                        if (mmax <= smax)
+                        {
+                            npath.MoveTo(info.Width / MainQuotes.Count * (i + 1), canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes[i + 1].Close - 35);
+                            npath.LineTo(info.Width / MainQuotes.Count * (i + 1), canvas.LocalClipBounds.Bottom - 35);
+                        }
+                    }
+
+                        if (current.Equals(dsmax) || current.Equals(dsmin))
                     {
                         canvas.DrawText(Convert.ToString(SecondaryQuotes[i + 1].Close), info.Width / SecondaryQuotes.Count * (i + 1), canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes[i + 1].Close - 35, textPaint);
                     }
                 }
 
                 double first = SecondaryQuotes[0].Close;
-                if (first.Equals(smax) || first.Equals(smin))
+                if (first.Equals(dsmax) || first.Equals(dsmin))
                 {
                     canvas.DrawText(Convert.ToString(SecondaryQuotes[0].Close), info.Width / SecondaryQuotes.Count * (0), canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes[0].Close - 35, textPaint);
                 }
@@ -235,7 +294,7 @@ namespace StockAnalysisCmov
                 paintDot.Color = Color.Black.ToSKColor();
                 canvas.DrawLine(0, canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[0].Close - 35, canvas.LocalClipBounds.Right, canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[0].Close - 35, paintDot);
                 canvas.DrawLine(0, canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[SecondaryQuotes.Count - 1].Close - 35, canvas.LocalClipBounds.Right, canvas.LocalClipBounds.Bottom - (float)SecondaryQuotes.OrderByDescending(l => l.Close).ToList()[SecondaryQuotes.Count - 1].Close - 35, paintDot);
-
+                canvas.DrawPath(npath, paintDash);
             }
 
 

@@ -29,18 +29,14 @@ namespace StockAnalysisCmov
             client.MaxResponseContentBufferSize = 256000;
         }
 
-        public async Task<List<Quote>> QuoteRefreshDataAsync(bool T)
+        public async Task<List<Quote>> QuoteRefreshDataAsync(string company)
         {
             Items = new List<String>();
             Uri uri;
-            if (T)
-            {
-                 uri = new Uri(string.Format(QuoteRestUrl, string.Empty));
-            }
-            else
-            {
-                uri = new Uri(string.Format(QuoteRestUrl2, string.Empty));
-            }
+            
+                 uri = new Uri(string.Format("https://api.iextrading.com/1.0/stock/" + company + "/chart", string.Empty));
+            
+            
             try
             {
                 var response = await client.GetAsync(uri).ConfigureAwait(false);
