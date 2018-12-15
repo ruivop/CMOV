@@ -11,13 +11,14 @@
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />-->
 
+
         <skia:SKCanvasView x:Name="canvasView"
         
         PaintSurface="OnCanvasViewPaintSurface"
         RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=0.15,Constant=0}"
         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=0.3,Constant=0}"
         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7,Constant=0}"
-        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.3,Constant=0}"/>
+        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.5,Constant=0}"/>
     </RelativeLayout>
 
 </ContentPage>
