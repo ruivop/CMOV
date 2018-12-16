@@ -17,7 +17,7 @@ namespace xamarimCmovProj
     {
         HttpClient client;
         public List<String> Items { get; private set; }
-        public List<Quote> Quotes { get; private set; }
+        public AllQuotes Quotes { get; private set; }
         Company companyRet = null;
 
         public RestService()
@@ -26,12 +26,12 @@ namespace xamarimCmovProj
             client.MaxResponseContentBufferSize = 256000;
         }
 
-        public async Task<List<Quote>> QuoteRefreshDataAsync(string company)
+        public async Task<List<Quote>> QuoteRefreshDataAsync(string company, String date)
         {
             Items = new List<String>();
             Uri uri;
 
-            uri = new Uri(string.Format("https://api.iextrading.com/1.0/stock/" + company + "/chart", string.Empty));
+            uri = new Uri(string.Format("https://marketdata.websol.barchart.com/getHistory.json?apikey=b9ad6a29dd4888e6deba0eca305384e8&symbol=" + company + "&type=daily&startDate=" + date, string.Empty));
 
 
             try
@@ -44,7 +44,7 @@ namespace xamarimCmovProj
 
                     //content = "{\"quotes\":" + content + "}";
 
-                    Quotes = JsonConvert.DeserializeObject<List<Quote>>(content);
+                    Quotes = JsonConvert.DeserializeObject<AllQuotes>(content);
                     Items.Add(content);
                     System.Diagnostics.Debug.WriteLine(content);
                 }
@@ -56,7 +56,7 @@ namespace xamarimCmovProj
 
 
 
-            return Quotes;
+            return Quotes.Results;
         }
 
 

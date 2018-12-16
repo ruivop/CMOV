@@ -4,32 +4,28 @@ using System.Text;
 
 namespace xamarimCmovProj.Models
 {
+    public class Status
+    {
+        public int Code { get; set; }
+        public string Message { get; set; }
+    }
+
     public class Quote
     {
-        public string Date { get; set; }
-
+        public string Symbol { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string TradingDay { get; set; }
         public double Open { get; set; }
-
         public double High { get; set; }
-
         public double Low { get; set; }
-
         public double Close { get; set; }
-
         public int Volume { get; set; }
+        public object OpenInterest { get; set; }
+    }
 
-        public double UnadjustedClose { get; set; }
-
-        public int UnadjustedVolume { get; set; }
-
-        public double Change { get; set; }
-
-        public double ChangePercent { get; set; }
-
-        public double Vwap { get; set; }
-
-        public string Label { get; set; }
-
-        public double ChangeOverTime { get; set; }
+    public class AllQuotes
+    {
+        public Status Status { get; set; }
+        public List<Quote> Results { get; set; }
     }
 }

@@ -22,6 +22,8 @@ namespace xamarimCmovProj
         public RestService rest = new RestService();
         int selectedIndex1 = -1;
         int selectedIndex2 = -1;
+        String dateOfSeing = "";
+        Boolean is7days = true;
 
         Dictionary<string, string> companies = new Dictionary<string, string>
         {
@@ -43,8 +45,12 @@ namespace xamarimCmovProj
         {
             InitializeComponent();
 
-            MainQuotes = rest.QuoteRefreshDataAsync("aapl").Result;
-            SecondaryQuotes = rest.QuoteRefreshDataAsync("ibm").Result;
+            DateTime today = DateTime.Today;
+            DateTime sevenDaysEarlier = today.AddDays(-9);
+            dateOfSeing = sevenDaysEarlier.ToString("yyyyMMdd");
+
+            MainQuotes = rest.QuoteRefreshDataAsync("aapl", dateOfSeing).Result;
+            SecondaryQuotes = rest.QuoteRefreshDataAsync("ibm", dateOfSeing).Result;
             Title = "Graph";
         }
 
@@ -60,7 +66,7 @@ namespace xamarimCmovProj
             }
             else if (selectedIndex1 != -1)
             {
-                MainQuotes = rest.QuoteRefreshDataAsync(companies[picker.Items[selectedIndex1]]).Result;
+                MainQuotes = rest.QuoteRefreshDataAsync(companies[picker.Items[selectedIndex1]], dateOfSeing).Result;
                 canvasView.InvalidateSurface();
             }
 
@@ -78,7 +84,7 @@ namespace xamarimCmovProj
             }
             else if (selectedIndex2 != -1)
             {
-                SecondaryQuotes = rest.QuoteRefreshDataAsync(companies[(picker.Items[selectedIndex2])]).Result;
+                SecondaryQuotes = rest.QuoteRefreshDataAsync(companies[(picker.Items[selectedIndex2])], dateOfSeing).Result;
                 canvasView.InvalidateSurface();
             }
         }
@@ -209,7 +215,7 @@ namespace xamarimCmovProj
                     canvas.DrawText(Convert.ToString(quotes[i + 1].Close), info.Width / quotes.Count * (i + 1), canvas.LocalClipBounds.Bottom - (float)quotes[i + 1].Close - 35, textPaint);
                 }
 
-                if (i % 3 == 0)
+                if (i % 3 == 0 || is7days)
                 {
                     if (isFirst && mmax >= smax)
                     {
@@ -224,7 +230,7 @@ namespace xamarimCmovProj
                     canvas.Save();
                     canvas.Translate((info.Width / quotes.Count * (i + 1)) - 5, canvas.LocalClipBounds.Bottom - 25);
                     canvas.RotateDegrees(22);
-                    canvas.DrawText(quotes[i + 1].Date, 0, 0, textPaint);
+                    canvas.DrawText(quotes[i + 1].Timestamp.ToString("yyyy-MM-dd"), 0, 0, textPaint);
                     canvas.Restore();
                 }
             }
@@ -258,6 +264,54 @@ namespace xamarimCmovProj
             a.Wait();
             Company c = a.Result;
             Navigation.PushAsync(new DetailsPage(c));
+        }
+
+        private void Button_7_Clicked(object sender, EventArgs e)
+        {
+            if (is7days)
+                return;
+            DateTime today = DateTime.Today;
+            DateTime sevenDaysEarlier = today.AddDays(-9);
+            dateOfSeing = sevenDaysEarlier.ToString("yyyyMMdd");
+            is7days = true;
+
+            string compName1 = companies[(string)Company1.SelectedItem];
+            string compName2 = companies[(string)Company2.SelectedItem];
+
+            if (compName1.CompareTo("empty") != 0)
+                MainQuotes = rest.QuoteRefreshDataAsync(compName1, dateOfSeing).Result;
+            else
+                MainQuotes.Clear();
+
+            if (compName2.CompareTo("empty") != 0)
+                SecondaryQuotes = rest.QuoteRefreshDataAsync(compName2, dateOfSeing).Result;
+            else
+                SecondaryQuotes.Clear();
+            canvasView.InvalidateSurface();
+        }
+
+        private void Button_30_Clicked(object sender, EventArgs e)
+        {
+            if (!is7days)
+                return;
+            DateTime today = DateTime.Today;
+            DateTime daysEarlier = today.AddDays(-39);
+            dateOfSeing = daysEarlier.ToString("yyyyMMdd");
+            is7days = false;
+
+            string compName1 = companies[(string)Company1.SelectedItem];
+            string compName2 = companies[(string)Company2.SelectedItem];
+
+            if (compName1.CompareTo("empty") != 0)
+                MainQuotes = rest.QuoteRefreshDataAsync(compName1, dateOfSeing).Result;
+            else
+                MainQuotes.Clear();
+
+            if (compName2.CompareTo("empty") != 0)
+                SecondaryQuotes = rest.QuoteRefreshDataAsync(compName2, dateOfSeing).Result;
+            else
+                SecondaryQuotes.Clear();
+            canvasView.InvalidateSurface();
         }
     }
 }
