@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="xamarimCmovProj.DetailsPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout
+                HorizontalOptions="Start"
+                VerticalOptions="Start" Margin="5">
+                
+                <Label Text="Example" FontSize="32" FontAttributes="Bold" x:Name="cName"></Label>
+
+                <Label Text="Symbol: " FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="symbol"></Label>
+
+                <Label Text="Exchange: " FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="exchange"></Label>
+
+                <Label Text="Industry: " FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="industry"></Label>
+
+                <Label Text="Website: " FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="website"></Label>
+
+                <Label Text="Description: " FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="description"></Label>
+
+                <Label Text="CEO: "  FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="ceo"></Label>
+
+                <Label Text="Issue Type: " FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="issueType"></Label>
+
+                <Label Text="Sector: "  FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="sector"></Label>
+
+                <Label Text="Tags: "  FontSize="16" FontAttributes="Bold"></Label>
+                <Label Text="Example" x:Name="tags"></Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
