@@ -30,7 +30,7 @@
                     </Picker.Items>
                     <Picker.SelectedIndex>0</Picker.SelectedIndex>
                 </Picker>
-                <Button Text="More Info" Clicked="Button_Company1_Clicked" HorizontalOptions="StartAndExpand" VerticalOptions="End"></Button>
+                <Button Text="Ifo" Clicked="Button_Company1_Clicked" HorizontalOptions="StartAndExpand" VerticalOptions="End"></Button>
 
                 <Picker Title="Company 2" 
                     x:Name="Company2"
@@ -52,7 +52,6 @@
                     </Picker.Items>
                     <Picker.SelectedIndex>1</Picker.SelectedIndex>
                 </Picker>
-                <Button Text="More Info" Clicked="Button_Company2_Clicked" HorizontalOptions="StartAndExpand" VerticalOptions="End"></Button>
             </StackLayout>
 
             <StackLayout Spacing="0" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="Start" Margin="0, 0, 0, 10">
