@@ -30,7 +30,7 @@
                     </Picker.Items>
                     <Picker.SelectedIndex>0</Picker.SelectedIndex>
                 </Picker>
-                <Button Text="Ifo" Clicked="Button_Company1_Clicked" HorizontalOptions="StartAndExpand" VerticalOptions="End"></Button>
+                <Button Text="Info" Clicked="Button_Company1_Clicked" HorizontalOptions="StartAndExpand" VerticalOptions="End"></Button>
 
                 <Picker Title="Company 2" 
                     x:Name="Company2"
